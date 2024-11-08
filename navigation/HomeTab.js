@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStack from "./HomeStack";
 import NewChats from "../screens/NewChats";
-import MyChats from "../screens/MyChats";
+import MyChats from "../screens/ChatsScreen";
 import TabHeader from "../components/TabHeader";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRoute } from "@react-navigation/native";
+
 const Tab = createBottomTabNavigator()
 
 export default function HomeTab(){

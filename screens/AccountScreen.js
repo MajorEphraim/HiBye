@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-const Account = ()=>{
+const AccountScreen = ()=>{
     return(
         
             <View style={styles.container}>
@@ -12,7 +12,7 @@ const Account = ()=>{
     )
 }
 
-export default Account
+export default AccountScreen
 
 const styles = StyleSheet.create({
     container: {

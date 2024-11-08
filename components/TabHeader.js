@@ -1,30 +1,45 @@
 import { View, StyleSheet, Image, Text,
     TouchableWithoutFeedback, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import thulani from '../assets/pictures/thulani.jpg'
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
 export default TabHeader = ()=>{
     const navigation = useNavigation()
-    
+    const route = useRoute()
+
     return(
         <View style={styles.container}>
             <View style={styles.image_name}>
                 <TouchableWithoutFeedback onPress={()=>navigation.navigate("Account")}>
                     <View style={styles.imageContainer}>
-
+                        <Image style={styles.pic} source={thulani}/>
                     </View>
                 </TouchableWithoutFeedback>
 
                 <Text style={styles.name}>HiBye</Text>
             </View>
-            <TouchableWithoutFeedback>
-                <View>
-                    <Feather name="search" size={26} color="#fff" />
-                </View>
-            </TouchableWithoutFeedback>
+
+            {
+                route.name === "My chats" ? (
+                    <TouchableWithoutFeedback>
+                        <View>
+                            <Feather name="search" size={26} color="#fff" />
+                        </View>
+                    </TouchableWithoutFeedback>
+
+                ):(
+                    <TouchableWithoutFeedback>
+                        <View>
+                            <Ionicons name="person" size={24} color="#fff" />
+                        </View>
+                    </TouchableWithoutFeedback>
+                )
+            }
         </View>
     )
 }
@@ -41,8 +56,8 @@ const styles = StyleSheet.create({
         paddingHorizontal:15
     },
     imageContainer:{
-        height:.045*height,
-        width:.045*height,
+        height:.049*height,
+        width:.049*height,
         backgroundColor:'#fff',
         borderRadius:100,
     }, 
@@ -53,12 +68,17 @@ const styles = StyleSheet.create({
     name:{
         fontSize:.085*width,
         color:'#fff',
-        marginLeft:20
+        marginLeft:15
     },
     friendRequest:{
         height:.035*height,
         width:.035*height,
         backgroundColor:'#fff',
         borderRadius:100,
-    }
+    },
+    pic:{
+        width:'100%',
+        height:'100%',
+        borderRadius:100
+    },
 })
