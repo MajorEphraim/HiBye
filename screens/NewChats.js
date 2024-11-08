@@ -5,7 +5,7 @@ const NewChats = ()=>{
     return(
         
             <View style={styles.container}>
-                <Text>NewChats</Text>
+              
             </View>
         
     )

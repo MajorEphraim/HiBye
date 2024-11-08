@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator()
 export default function HomeStack(){
     return(
         <Stack.Navigator screenOptions={{headerShown:false}}>
-            <Stack.Screen name="Home tan" component={HomeTab}/>
+            <Stack.Screen name="Home tab" component={HomeTab}/>
             <Stack.Screen name="Chat messages" component={ChatMessages}/>
             <Stack.Screen name="Account" component={Account}/>
         </Stack.Navigator>

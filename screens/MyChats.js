@@ -1,11 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const MyChats = ()=>{
+  const navigation = useNavigation()
     return(
             
               <View style={styles.container}>
-                  <Text>MyChats</Text>
+                  <TouchableWithoutFeedback onPress={()=>navigation.navigate("Chat messages")}>
+                    <Text>View chat</Text>
+                  </TouchableWithoutFeedback>
                   <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>
         
