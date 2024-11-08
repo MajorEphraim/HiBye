@@ -3,11 +3,11 @@ import { StyleSheet, Text, View } from 'react-native';
 
 const MyChats = ()=>{
     return(
-        
-            <View style={styles.container}>
-                <Text>MyChats</Text>
-            <StatusBar style="auto" />
-            </View>
+            
+              <View style={styles.container}>
+                  <Text>MyChats</Text>
+                  <StatusBar style="light" backgroundColor='#A30D5B'/>
+              </View>
         
     )
 }

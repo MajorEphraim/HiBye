@@ -6,7 +6,6 @@ const NewChats = ()=>{
         
             <View style={styles.container}>
                 <Text>NewChats</Text>
-            <StatusBar style="auto" />
             </View>
         
     )

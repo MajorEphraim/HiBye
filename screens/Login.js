@@ -38,7 +38,6 @@ const Login = ()=>{
                     </TouchableWithoutFeedback>
 
                 </KeyboardAvoidingView>
-            <StatusBar style="auto" />
             </View>
         
     )

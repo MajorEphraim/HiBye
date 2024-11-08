@@ -34,7 +34,6 @@ const Register = ()=>{
                      <Text style={styles.go_login}>Go to log in</Text>
                     </TouchableWithoutFeedback>
                 </KeyboardAvoidingView>
-            <StatusBar style="auto" />
             </View>
         
     )
