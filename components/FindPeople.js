@@ -1,7 +1,7 @@
 import { TouchableWithoutFeedback, View, Text, StyleSheet } from 'react-native'
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-export default FindPeople = ()=>{
+export default FindPeople = ({setIsVisible})=>{
     return(
         <View style={styles.container}>
             <TouchableWithoutFeedback>
@@ -9,7 +9,7 @@ export default FindPeople = ()=>{
                     <Text style={styles.text}>Press to find 10 people</Text>
                 </View>
             </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={()=>setIsVisible(true)}>
                 <AntDesign name="caretdown" size={27} color="#A30D5B" />
             </TouchableWithoutFeedback>
         </View>

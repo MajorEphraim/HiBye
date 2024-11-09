@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import FindPeople from '../components/FindPeople';
 import PersonComp from '../components/PersonComp';
 import FriendRequests from '../modals/FriendRequests';
+import PeopleNum from '../modals/PeopleNum';
 
 import pikachu from '../assets/pictures/jackie.jpg'
 import chris from '../assets/pictures/zero two.jpeg'
@@ -23,7 +24,9 @@ const chats = [
 
 const NewChats = ()=>{
 
-  const [modalVisible, setModalVisible] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
+
 
   const handlePress = ()=>{
     setModalVisible(true)
@@ -32,7 +35,7 @@ const NewChats = ()=>{
     return(
         
             <View style={styles.container}>
-              <FindPeople/>
+              <FindPeople setIsVisible={setIsVisible}/>
               <FlatList
                  data={chats}
                  keyExtractor={item=>item.id}
@@ -44,6 +47,7 @@ const NewChats = ()=>{
                   )}               
                   />
                 <FriendRequests modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+                <PeopleNum modalVisible={isVisible} setModalVisible={setIsVisible}/>
                 <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>
         
