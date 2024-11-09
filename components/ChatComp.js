@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
         height:65,
         width:'100%',
         flexDirection:'row',
-        padding:5
+        padding:5,
+        marginBottom:5
     },
 
     firstView:{
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
         width:50,
         borderRadius:100,
         backgroundColor:'#A30D5B',
-        marginRight:8
+        marginRight:15
     },
     pic:{
         width:'100%',
