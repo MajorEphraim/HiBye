@@ -1,7 +1,9 @@
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default PersonComp =({id, name, handlePress, pic, status})=>{
+export default RequestComp =({id, name, pic, status, date})=>{
     const currentIcon = ()=>{
 
         let iconName
@@ -23,7 +25,7 @@ export default PersonComp =({id, name, handlePress, pic, status})=>{
         else if(status === "accepted")
             color = "#1AD166"
         else
-            color = "#676262"
+            color = "#D9D9D9"
 
         return color
     }
@@ -37,11 +39,19 @@ export default PersonComp =({id, name, handlePress, pic, status})=>{
                         <Text style={styles.name}>{name}</Text>
                 </View>
 
+                <Text style={styles.date}>{date}</Text>
 
-                <TouchableOpacity style={styles.statusContainer} onPress={()=>handlePress(id)}>
-                    <FontAwesome6 name={currentIcon()} size={20} color={currentColor()} />
-                    <Text style={styles.statusText}>{status}</Text>
-                </TouchableOpacity>
+                <View style={styles.iconsContainer}>
+                    <TouchableOpacity style={styles.statusContainer} onPress={()=>handlePress(id)}>
+                        <Ionicons name="person-add" size={24} color="#A30D5B" />
+                        <Text style={styles.statusText}>accept</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={{...styles.statusContainer, marginLeft:10}} onPress={()=>handlePress(id)}>
+                        <MaterialCommunityIcons name="bell-remove" size={24} color="#676262" />                        
+                        <Text style={styles.statusText}>ignore</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
     )
 }
@@ -52,23 +62,20 @@ const styles = StyleSheet.create({
         width:'100%',
         flexDirection:'row',
         alignItems:'center',
+        justifyContent:'space-between',
         marginBottom:5,
     },
     firstView:{
         flexDirection:'row',
         alignItems:'center',
-        flex:9,
-        flexDirection:'row',
         justifyContent:'flex-start',
-        alignItems:'center',
-        overflow:'hidden',
     },
     imageContainer:{
-        height:50,
-        width:50,
+        height:45,
+        width:45,
         borderRadius:100,
         backgroundColor:'#A30D5B',
-        marginRight:15
+        marginRight:10
     },
     pic:{
         width:'100%',
@@ -76,15 +83,22 @@ const styles = StyleSheet.create({
         borderRadius:100
     },
     name:{
-        fontSize:19,
+        fontSize:18,
         color:'#000'
     },
     statusContainer:{
         flexDirection:'column',
         alignItems:'center',
-        flex:2
     },
     statusText:{
         fontSize:12
+    },
+    iconsContainer:{
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    date:{
+        color:'#000',
+        fontSize:14
     }
 })
