@@ -4,18 +4,20 @@ import FindPeople from '../components/FindPeople';
 import PersonComp from '../components/PersonComp';
 
 
-import pikachu from '../assets/pictures/pikachu.jpeg'
-import chris from '../assets/pictures/chris.jpeg'
-import abdul from '../assets/pictures/abdul.jpeg'
-import tendai from '../assets/pictures/tendai.jpeg'
+import pikachu from '../assets/pictures/jackie.jpg'
+import chris from '../assets/pictures/zero two.jpeg'
+import abdul from '../assets/pictures/tommy.jpeg'
+import tendai from '../assets/pictures/emily.jpeg'
+import ntando from '../assets/pictures/ntando.jpeg'
+import debra from '../assets/pictures/debra.jpeg'
 
 const chats = [
-               {id:"1", name:"Pikachu", status:"request", profilePic:pikachu},
-               {id:"2",name:"Chris", status:"requested", profilePic:chris},
-               {id:"3", name:"Abdul", status:"request", profilePic:abdul},
-               {id:"4",name:"Tendai", status:"accepted", profilePic:tendai},
-               {id:"5", name:"Abdul", status:"request", profilePic:abdul},
-               {id:"6",name:"Tendai", status:"accepted", profilePic:tendai},
+               {id:"1", name:"Jackie", status:"request", profilePic:pikachu},
+               {id:"2",name:"Zero Two", status:"requested", profilePic:chris},
+               {id:"3", name:"Tommy", status:"request", profilePic:abdul},
+               {id:"4",name:"Emily", status:"accepted", profilePic:tendai},
+               {id:"5", name:"Ntando", status:"request", profilePic:ntando},
+               {id:"6",name:"Debra", status:"accepted", profilePic:debra},
               ]
 
 const NewChats = ()=>{
@@ -23,7 +25,7 @@ const NewChats = ()=>{
   const handlePress = ()=>{
 
   }
-  
+
     return(
         
             <View style={styles.container}>
@@ -50,7 +52,10 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-  
     },
+    listContainer:{
+      marginHorizontal:12,
+      marginTop:20
+    }
   });
   

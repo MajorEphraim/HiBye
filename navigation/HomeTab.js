@@ -16,9 +16,9 @@ export default function HomeTab(){
                 let iconName;
                 
                 if(route.name === "My chats"){
-                    iconName = focused ? 'chatbubble':'chatbubble-outline'
+                    iconName = 'chatbubble'
                 }else if(route.name === 'New chats'){
-                    iconName = focused ? 'people':'people-outline'
+                    iconName = 'people'
                 }
                 
                 return <Ionicons name={iconName} size={size} color={color} />

@@ -2,6 +2,32 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 export default PersonComp =({id, name, handlePress, pic, status})=>{
+    const currentIcon = ()=>{
+
+        let iconName
+        if(status === "request")
+            iconName = "circle-plus"
+        else if(status === "accepted")
+            iconName = "handshake-simple"
+        else
+            iconName = "paper-plane"
+
+        return iconName
+    }
+
+    const currentColor = ()=>{
+
+        let color
+        if(status === "request")
+            color = "#A30D5B"
+        else if(status === "accepted")
+            color = "#1AD166"
+        else
+            color = "#D9D9D9"
+
+        return color
+    }
+
     return(
             <View id={id} style={styles.container}>
                 <View style={styles.firstView}>
@@ -13,8 +39,8 @@ export default PersonComp =({id, name, handlePress, pic, status})=>{
 
 
                 <TouchableOpacity style={styles.statusContainer} onPress={()=>handlePress(id)}>
-                    <FontAwesome6 name="circle-plus" size={24} color="#A30D5B" />
-                    <Text>{status}</Text>
+                    <FontAwesome6 name={currentIcon()} size={20} color={currentColor()} />
+                    <Text style={styles.statusText}>{status}</Text>
                 </TouchableOpacity>
             </View>
     )
@@ -25,7 +51,8 @@ const styles = StyleSheet.create({
         height:65,
         width:'100%',
         flexDirection:'row',
-        marginBottom:5
+        alignItems:'center',
+        marginBottom:5,
     },
     firstView:{
         flexDirection:'row',
@@ -49,11 +76,15 @@ const styles = StyleSheet.create({
         borderRadius:100
     },
     name:{
-        fontSize:22
+        fontSize:19,
+        color:'#000'
     },
     statusContainer:{
         flexDirection:'column',
         alignItems:'center',
         flex:2
+    },
+    statusText:{
+        fontSize:12
     }
 })
