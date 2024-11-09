@@ -1,8 +1,9 @@
+import { useState } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import FindPeople from '../components/FindPeople';
 import PersonComp from '../components/PersonComp';
-
+import FriendRequests from '../modals/FriendRequests';
 
 import pikachu from '../assets/pictures/jackie.jpg'
 import chris from '../assets/pictures/zero two.jpeg'
@@ -22,6 +23,8 @@ const chats = [
 
 const NewChats = ()=>{
 
+  const [modalVisible, setModalVisible] = useState(true)
+
   const handlePress = ()=>{
 
   }
@@ -40,6 +43,7 @@ const NewChats = ()=>{
                    />
                   )}               
                   />
+                <FriendRequests modalVisible={modalVisible} setModalVisible={setModalVisible}/>
                 <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>
         

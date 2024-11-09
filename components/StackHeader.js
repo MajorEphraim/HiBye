@@ -4,6 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import pikachu from '../assets/pictures/pikachu.jpeg'
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
@@ -20,7 +21,7 @@ export default StackHeader = ()=>{
                         <Ionicons name="arrow-back-sharp" size={24} color="#fff" />
                     </TouchableWithoutFeedback>
                 </View>
-                <Text style={styles.routeName}>{route.name === "Account" ? "Account" : "Message"}</Text>
+                <Text style={styles.routeName}>{route.name === "Account" ? "Account" : "Pikachu"}</Text>
             </View>
 
 
@@ -31,9 +32,14 @@ export default StackHeader = ()=>{
                     </TouchableWithoutFeedback>
 
                 ):(
-                    <TouchableWithoutFeedback>
-                        <Entypo name="dots-three-horizontal" size={24} color="#fff" />
-                    </TouchableWithoutFeedback>
+                    <View style={styles.lowerContainer}>
+                        <View style={styles.imageContainer}>
+                            <Image source={pikachu} style={styles.pic}/>
+                        </View>
+                        <TouchableWithoutFeedback>
+                            <Entypo name="dots-three-horizontal" size={24} color="#fff" />
+                        </TouchableWithoutFeedback>
+                    </View>
                 )
             }
         </View>
@@ -85,5 +91,21 @@ const styles = StyleSheet.create({
         color:'#fff',
         fontSize:20,
         marginLeft:15
+    },
+    imageContainer:{
+        height:50,
+        width:50,
+        borderRadius:100,
+        backgroundColor:'#fff',
+        marginRight:15
+    },
+    pic:{
+        width:'100%',
+        height:'100%',
+        borderRadius:100
+    },
+    lowerContainer:{
+        flexDirection:'row',
+        alignItems:"center",
     }
 })
