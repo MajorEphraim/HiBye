@@ -38,6 +38,7 @@ const Login = ()=>{
                     </TouchableWithoutFeedback>
 
                 </KeyboardAvoidingView>
+                <StatusBar style="light" backgroundColor='#A30D5B'/>
             </View>
         
     )

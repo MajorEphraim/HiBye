@@ -6,7 +6,7 @@ const ChatMessages = ()=>{
         
             <View style={styles.container}>
                 <Text>ChatMessages</Text>
-            <StatusBar style="auto" />
+                <StatusBar style="light" backgroundColor='#A30D5B'/>
             </View>
         
     )
