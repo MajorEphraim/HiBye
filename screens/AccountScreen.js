@@ -1,14 +1,20 @@
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TextInput, 
         Dimensions, TouchableWithoutFeedback } from 'react-native';
+import LogoutModal from '../modals/LogoutModal';
 import thulani from '../assets/pictures/thulani.jpg'
+
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
 const AccountScreen = ()=>{
+  const [modalVisible, setModalVisible] = useState(true)
     return(
         
+            <>
+            <LogoutModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
             <View style={styles.container}>
               <View style={styles.pic_details}>
                  <View style={styles.imageContainer}>
@@ -25,6 +31,7 @@ const AccountScreen = ()=>{
               </TouchableWithoutFeedback>
               <StatusBar style="light" backgroundColor='#A30D5B'/>
             </View>
+            </>
         
     )
 }

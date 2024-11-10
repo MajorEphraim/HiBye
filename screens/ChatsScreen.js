@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableWithoutFeedback, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, FlatList, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ChatComp from '../components/ChatComp';
 
@@ -26,6 +26,9 @@ const ChatsScreen = ()=>{
     return(
             
               <View style={styles.container}>
+                  <View style={styles.searchContainer}>
+                    <TextInput placeholder='search by name' style={styles.searchBar} />
+                  </View>
                     <FlatList
                         data={chats}
                         keyExtractor={item=>item.id}
@@ -53,6 +56,22 @@ const styles = StyleSheet.create({
     listContainer:{
       marginTop:10,
       margin:5
+    },
+    searchBar:{
+      width:"60%",
+      height:40,
+      borderColor:'#A30D5B',
+      borderWidth:2,
+      borderStyle:'solid',
+      color:'#000',
+      margin:10,
+      borderRadius:20,
+      padding:10,
+    },
+    searchContainer:{
+      width:'100%',
+      flexDirection:'row',
+      justifyContent:'flex-start'
     }
   });
   

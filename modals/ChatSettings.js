@@ -35,7 +35,7 @@ export default ChatSettings=({modalVisible, setModalVisible})=> {
       >
         <View style={styles.modalView}>
             <View style={styles.countContainer}>
-                <TouchableWithoutFeedback onPress={handleBlock}>
+                <TouchableWithoutFeedback onPress={handleBackground}>
                   <View style={styles.textContainer}>
                       <Text style={styles.text}>Disable background image</Text>
                   </View>
