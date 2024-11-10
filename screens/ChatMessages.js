@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, FlatList
  } from 'react-native';
 import PicBackground from '../components/PicBackground';
 import ConversationComp from '../components/ConversationComp';
+import ChatSetting from '../modals/ChatSettings';
 
 import pikachu from '../assets/pictures/pikachu.jpeg'
 
@@ -11,10 +13,13 @@ const isAllowed = true
 
 
 const ChatMessages = ()=>{
+  const [modalVisible, setModalVisible] = useState(true)
+
     return(
       <View style={styles.container}>
         <PicBackground pic ={pikachu}/>
         <ConversationComp isAllowed={isAllowed}/>
+        <ChatSetting modalVisible={modalVisible} setModalVisible={setModalVisible}/>
       </View>
     )
 }

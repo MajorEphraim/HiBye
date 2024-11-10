@@ -25,7 +25,7 @@ const chats = [
 const NewChats = ()=>{
 
   const [modalVisible, setModalVisible] = useState(false)
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
 
 
   const handlePress = ()=>{
