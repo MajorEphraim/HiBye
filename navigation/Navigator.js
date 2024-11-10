@@ -1,14 +1,15 @@
-import * as React from 'react';
+import { useContext, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import HomeTab from './HomeTab';
 import AuthStack from './AuthStack';
 import HomeStack from './HomeStack';
+import { AuthContext } from '../context/AuthContext'
 
 export default function Navigator() {
-  const token = "rfgrgrg"
+  
+  const { userToken} = useContext(AuthContext)
     return (
         <NavigationContainer>
-            {token ? <HomeStack/> : <AuthStack/>}
+            {userToken ? <HomeStack/> : <AuthStack/>}
         </NavigationContainer>
   );
 }
