@@ -1,17 +1,28 @@
-import { TouchableWithoutFeedback, View, Text, StyleSheet } from 'react-native'
+import React,{ useState } from 'react';
+import { TouchableWithoutFeedback, View, Text, 
+    StyleSheet, TouchableOpacity } from 'react-native'
 import AntDesign from '@expo/vector-icons/AntDesign';
+import SearchBar from './SearchBar';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default FindPeople = ({setIsVisible})=>{
+
+    const [search, setSearch] = useState('')
+
+    const handlePress = ()=>{
+      
+    }
+  
+    const handleSearch = (val)=>{
+      setSearch(val)
+    }
+
     return(
         <View style={styles.container}>
-            <TouchableWithoutFeedback>
-                <View style={styles.textContainer}>
-                    <Text style={styles.text}>Press to find 10 people</Text>
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={()=>setIsVisible(true)}>
-                <AntDesign name="caretdown" size={27} color="#A30D5B" />
-            </TouchableWithoutFeedback>
+            <SearchBar placeholder={"search by name or email"} value={search} handleSearch={handleSearch} />
+            <TouchableOpacity onPress={handlePress}>
+                <MaterialIcons name="refresh" size={32} color="#A30D5B" />
+            </TouchableOpacity>
         </View>
     )
 }
@@ -19,11 +30,10 @@ export default FindPeople = ({setIsVisible})=>{
 const styles = StyleSheet.create({
     container:{
         width:'100%',
-        height:60,
         flexDirection:'row',
-        justifyContent:'center',
+        justifyContent:'flex-start',
         alignItems:'center',
-        marginTop:15
+        
     },
     textContainer:{
         borderColor:'#A30D5B',

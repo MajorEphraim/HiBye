@@ -23,23 +23,11 @@ export default TabHeader = ()=>{
 
                 <Text style={styles.name}>HiBye</Text>
             </View>
-
-            {
-                route.name === "My chats" ? (
-                    <TouchableWithoutFeedback>
-                        <View>
-                            <Feather name="search" size={26} color="#fff" />
-                        </View>
-                    </TouchableWithoutFeedback>
-
-                ):(
-                    <TouchableWithoutFeedback>
-                        <View>
-                            <Ionicons name="person" size={24} color="#fff" />
-                        </View>
-                    </TouchableWithoutFeedback>
-                )
-            }
+            <TouchableWithoutFeedback>
+                <View>
+                    <Ionicons name="person" size={24} color="#fff" />
+                </View>
+            </TouchableWithoutFeedback>
         </View>
     )
 }

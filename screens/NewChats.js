@@ -5,6 +5,7 @@ import FindPeople from '../components/FindPeople';
 import PersonComp from '../components/PersonComp';
 import FriendRequests from '../modals/FriendRequests';
 import PeopleNum from '../modals/PeopleNum';
+import FiltersComp from '../components/FiltersComp';
 
 import pikachu from '../assets/pictures/jackie.jpg'
 import chris from '../assets/pictures/zero two.jpeg'
@@ -36,6 +37,7 @@ const NewChats = ()=>{
         
             <View style={styles.container}>
               <FindPeople setIsVisible={setIsVisible}/>
+              <FiltersComp/>
               <FlatList
                  data={chats}
                  keyExtractor={item=>item.id}

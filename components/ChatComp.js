@@ -1,6 +1,8 @@
 import {View, Text, StyleSheet, TouchableWithoutFeedback, Image} from 'react-native'
 
-export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress, pic})=>{
+const userId = "0123"
+
+export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress, pic, lastSender, unread})=>{
     return(
         <TouchableWithoutFeedback id={id} onPress={()=>handlePress(id)}>
             <View style={styles.container}>
@@ -11,18 +13,23 @@ export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress
 
                     <View style={styles.name_message}>
                         <Text style={styles.name}>{name}</Text>
-                        <Text style={styles.lastMessage} numberOfLines={1}>{lastMessage}</Text>
+                        <Text style={{...styles.lastMessage,fontWeight: unread ? 'bold':null}} numberOfLines={1}>{ lastSender === userId ?"You: "+ lastMessage:lastMessage}</Text>
                     </View>
                 </View>
 
                 <View style={styles.secView}>
-                    <View style={styles.messageBadge}>
-                        <Text style={styles.messageCount}>{count}</Text>
-                    </View>
+                    {
+                        count > 1 ? (
+                            <View style={styles.messageBadge}>
+                                <Text style={styles.messageCount}>{count}</Text>
+                            </View>
+
+                        ):(null)
+                    }
                 </View>
 
                 <View style={styles.lastView}>
-                    <Text>{latestTime}</Text>
+                    <Text style={{...styles.latestTime,...(unread && lastSender !== userId ?{color:'#AD3173',fontWeight:'bold'}:{color:'#000',fontWeight:null})}}>{latestTime}</Text>
                 </View>
             </View>
         </TouchableWithoutFeedback>
@@ -95,6 +102,10 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         alignSelf:'flex-start',
         justifyContent:'center',
-        paddingVertical:10
+        paddingVertical:10,
+        maxWidth:200
+    },
+    latestTime:{
+        fontSize:12
     }
 })
