@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TextInput, 
         Dimensions, TouchableWithoutFeedback } from 'react-native';
 import LogoutModal from '../modals/LogoutModal';
+import { HeaderContext } from '../context/HeaderContext';
+
 import thulani from '../assets/pictures/thulani.jpg'
 
 
@@ -10,11 +12,12 @@ const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
 const AccountScreen = ()=>{
-  const [modalVisible, setModalVisible] = useState(true)
+  const { openLogout, toggleOpenLogout } = useContext(HeaderContext)
+
     return(
         
             <>
-            <LogoutModal modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+            <LogoutModal modalVisible={openLogout} setModalVisible={toggleOpenLogout}/>
             <View style={styles.container}>
               <View style={styles.pic_details}>
                  <View style={styles.imageContainer}>

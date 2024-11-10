@@ -3,35 +3,29 @@ import { View, Text, Modal, Button, StyleSheet,
     TouchableOpacity, Dimensions, FlatList,
     TouchableWithoutFeedback
  } from 'react-native';
- import AntDesign from '@expo/vector-icons/AntDesign';
- import RequestComp from '../components/RequestComp';
 
  const height = Dimensions.get('window').height
  const width = Dimensions.get('window').width
 
-const data = [
-    {id:"1", count:10},
-    {id:"2",count:100},
-    {id:"3", count:1000},
-]
+
 
 export default ChatSettings=({modalVisible, setModalVisible})=> {
   // State to control the modal visibility
   const handleBlock = ()=>{
-    setModalVisible(false)
+    setModalVisible()
   }
 
   const handleBackground = ()=>{
-    setModalVisible(false)
+    setModalVisible()
   }
 
   return (
     <View style={styles.container}>  
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}     
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)} 
+        onRequestClose={() => setModalVisible()} 
       >
         <View style={styles.modalView}>
             <View style={styles.countContainer}>

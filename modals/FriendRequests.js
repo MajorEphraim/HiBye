@@ -27,11 +27,11 @@ export default FriendRequests=({modalVisible, setModalVisible})=> {
         animationType="slide"
         transparent={true}     
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)} 
+        onRequestClose={() => setModalVisible()} 
       >
         <View style={styles.modalView}>
             <View style={styles.closeContainer} >
-                <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+                <TouchableWithoutFeedback onPress={() => setModalVisible()}>
                     <AntDesign name="close" size={30} color="#fff" />
                 </TouchableWithoutFeedback>
             </View>

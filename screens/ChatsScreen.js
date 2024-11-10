@@ -1,9 +1,10 @@
-import React,{ useState } from 'react';
+import React,{ useState, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableWithoutFeedback, FlatList, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ChatComp from '../components/ChatComp';
 import SearchBar from '../components/SearchBar';
+
 
 import pikachu from '../assets/pictures/pikachu.jpeg'
 import chris from '../assets/pictures/chris.jpeg'
@@ -45,7 +46,7 @@ const ChatsScreen = ()=>{
                           />
                         )}               
                     />
-                  <StatusBar style="light" backgroundColor='#A30D5B'/>
+                    <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>
         
     )

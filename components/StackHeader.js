@@ -1,9 +1,12 @@
+import React,{ useContext } from "react";
 import { View, StyleSheet, Image, Text,
     TouchableWithoutFeedback, Dimensions } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { HeaderContext } from "../context/HeaderContext";
+
 import pikachu from '../assets/pictures/pikachu.jpeg'
 
 const height = Dimensions.get('window').height
@@ -12,6 +15,7 @@ const width = Dimensions.get('window').width
 export default StackHeader = ()=>{
     const navigation = useNavigation()
     const route = useRoute()
+    const { toggleOpenOptions, toggleOpenLogout } = useContext(HeaderContext)
 
     return(
         <View style={styles.container}>
@@ -27,7 +31,7 @@ export default StackHeader = ()=>{
 
             {
                 route.name === "Account" ? (
-                    <TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={()=>toggleOpenLogout()}>
                         <AntDesign name="logout" size={24} color="#fff" />
                     </TouchableWithoutFeedback>
 
@@ -36,7 +40,7 @@ export default StackHeader = ()=>{
                         <View style={styles.imageContainer}>
                             <Image source={pikachu} style={styles.pic}/>
                         </View>
-                        <TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={()=>toggleOpenOptions()}>
                             <Entypo name="dots-three-horizontal" size={24} color="#fff" />
                         </TouchableWithoutFeedback>
                     </View>

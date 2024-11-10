@@ -1,9 +1,12 @@
+import { useContext } from "react";
 import { View, StyleSheet, Image, Text,
     TouchableWithoutFeedback, Dimensions } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { HeaderContext } from '../context/HeaderContext'
 import thulani from '../assets/pictures/thulani.jpg'
+
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
@@ -11,6 +14,7 @@ const width = Dimensions.get('window').width
 export default TabHeader = ()=>{
     const navigation = useNavigation()
     const route = useRoute()
+    const { toggleOpenRequest } = useContext(HeaderContext)
 
     return(
         <View style={styles.container}>
@@ -23,7 +27,7 @@ export default TabHeader = ()=>{
 
                 <Text style={styles.name}>HiBye</Text>
             </View>
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={()=>toggleOpenRequest()}>
                 <View>
                     <Ionicons name="person" size={24} color="#fff" />
                 </View>

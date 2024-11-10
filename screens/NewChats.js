@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import FindPeople from '../components/FindPeople';
@@ -6,6 +6,7 @@ import PersonComp from '../components/PersonComp';
 import FriendRequests from '../modals/FriendRequests';
 import PeopleNum from '../modals/PeopleNum';
 import FiltersComp from '../components/FiltersComp';
+import { HeaderContext } from '../context/HeaderContext';
 
 import pikachu from '../assets/pictures/jackie.jpg'
 import chris from '../assets/pictures/zero two.jpeg'
@@ -25,12 +26,11 @@ const chats = [
 
 const NewChats = ()=>{
 
-  const [modalVisible, setModalVisible] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-
+  const { openRequest, toggleOpenRequest } = useContext(HeaderContext)
 
   const handlePress = ()=>{
-    setModalVisible(true)
+ 
   }
 
     return(
@@ -48,7 +48,7 @@ const NewChats = ()=>{
                    />
                   )}               
                   />
-                <FriendRequests modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+                <FriendRequests modalVisible={openRequest} setModalVisible={toggleOpenRequest}/>
                 <PeopleNum modalVisible={isVisible} setModalVisible={setIsVisible}/>
                 <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>

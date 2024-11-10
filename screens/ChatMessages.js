@@ -1,25 +1,25 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, FlatList
  } from 'react-native';
 import PicBackground from '../components/PicBackground';
 import ConversationComp from '../components/ConversationComp';
 import ChatSetting from '../modals/ChatSettings';
+import { HeaderContext } from '../context/HeaderContext';
 
 import pikachu from '../assets/pictures/pikachu.jpeg'
 
-const userId = "123"
 const isAllowed = true
 
 
 const ChatMessages = ()=>{
-  const [modalVisible, setModalVisible] = useState(true)
+  const { openOptions, toggleOpenOptions } = useContext(HeaderContext)
 
     return(
       <View style={styles.container}>
         <PicBackground pic ={pikachu}/>
         <ConversationComp isAllowed={isAllowed}/>
-        <ChatSetting modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+        <ChatSetting modalVisible={openOptions} setModalVisible={toggleOpenOptions}/>
       </View>
     )
 }

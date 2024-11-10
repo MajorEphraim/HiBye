@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 export default LogoutModal = ({ modalVisible, setModalVisible }) => {
@@ -9,7 +8,7 @@ export default LogoutModal = ({ modalVisible, setModalVisible }) => {
 
   return (
     <Modal
-      animationType="slide"
+      animationType="fade"
       transparent={true}
       visible={modalVisible}
       onRequestClose={() => setModalVisible(false)}
