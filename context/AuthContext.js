@@ -1,5 +1,6 @@
 import React, {useState, createContext} from "react";
 import { signInUser, getUserId, signOutUser } from '../services/authService'
+import * as SecureStore from 'expo-secure-store';
 
 export const AuthContext = createContext()
 
@@ -13,12 +14,13 @@ export const AuthProvider =({ children })=>{
         try {
             setIsLoading(true)
             const response = await signInUser(email, password)
-            setIsLoading(true)
-
+            
             if(response.error)
                 setErrorMsg(response.message)
-            else
-            setUserId(response.uid)
+            else{
+                await SecureStore.setItemAsync('userId', response.uid);
+                setUserId(response.uid)
+            }
         } catch (error) {
             setErrorMsg("Something went wrong: ", error)
             setIsLoading(false)
@@ -54,6 +56,7 @@ export const AuthProvider =({ children })=>{
             
         }
     }
+
 
     return (
         <AuthContext.Provider value={{userId, isLoading, errorMsg, signIn, useLocalUserId, signOut}}>

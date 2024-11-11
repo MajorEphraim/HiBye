@@ -1,7 +1,8 @@
 import { auth, createUserWithEmailAndPassword, 
-        signInWithEmailAndPassword, signOut, db, doc, setDoc } 
+        signInWithEmailAndPassword, signOut } 
 from '../firebase/configs'
 import * as SecureStore from 'expo-secure-store';
+import { fetchAccountDetails } from './accountService'
 
 const url = "https://api-h4c7yaksja-uc.a.run.app/accounts"
 
@@ -42,7 +43,6 @@ const signInUser = async(email,password)=>{
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
-        await SecureStore.setItemAsync('userId', user.uid);
         return user
     } catch (error) {
         return { error:true, message: "Something went wrong while signing in: "+ error.message };
