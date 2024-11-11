@@ -3,33 +3,36 @@ import { auth, createUserWithEmailAndPassword,
 from '../firebase/configs'
 import * as SecureStore from 'expo-secure-store';
 
-const url = "https://console.firebase.google.com/project/hibye-3bb78/overview"
+const url = "https://api-h4c7yaksja-uc.a.run.app/accounts"
 
 const signUpUser = async(username,email,password)=>{
 
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
-        await setDoc(doc(db,"accounts", user.uid),{
-            username,
-            email,
-            profilePic:null
-        })
-
-        const resp = await fetch(url+"/"+user,{
-            method:'PUT',
-            headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({
+        
+        const resp = await fetch(url+"/"+user.uid, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
                 username,
                 email,
-                profilePic:null
-            })
-        })
-        const data = await resp.json()
+            }),
+        });
 
-        console.log("DATA :",data)
-        return user
+        // Check if the response status is OK (2xx range)
+        if (!resp.ok) {
+            throw new Error(`Failed to update account: ${resp.statusText}`);
+        }
+
+        // Parse the JSON response
+        const data = await resp.json();
+
+        // Handle the successful response
+        console.log('User updated successfully', data);
+        return data;
     } catch (error) {
+        console.log(error)
         return {error:true, message:"Something went wrong: "+error.message}
     }
 }
