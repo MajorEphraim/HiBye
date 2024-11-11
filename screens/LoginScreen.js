@@ -1,3 +1,4 @@
+import React,{useState,useContext} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Dimensions,
   TextInput, TouchableWithoutFeedback, KeyboardAvoidingView
@@ -5,16 +6,31 @@ import { StyleSheet, Text, View, Image, Dimensions,
 import logo from '../assets/pictures/logo_t.png' 
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext' 
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
 const Login = ()=>{
+  const {signIn, isLoading, errorMsg } = useContext(AuthContext)
 
   const navigation = useNavigation()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [err, setErr] = useState(errorMsg)
 
-  const signIn = ()=>{
 
+  const signInUser = async()=>{
+
+      if(email === '' || password ==='')
+        return
+
+      try {
+        await signIn(email, password)
+      } catch (error) {
+        setErr("Something went wrong: "+error)
+        console.log("EE ", error)
+      }
   }
 
     return(
@@ -25,9 +41,23 @@ const Login = ()=>{
                     <Text style={styles.signin_text}>Sign in here</Text>
                 </View>
                 <KeyboardAvoidingView style={styles.input_button}>
-                    <TextInput style={styles.input_field}/>
-                    <TextInput style={styles.input_field}/>
-                    <Button name={"Log in"} handlePress={signIn} />
+                    <TextInput 
+                      placeholder='email' 
+                      placeholderTextColor={'#cc7ca5'} 
+                      style={styles.input_field}
+                      value={email}
+                      onChangeText={val=>setEmail(val)}
+                      />
+
+                    <TextInput 
+                      placeholder='password' 
+                      placeholderTextColor={'#cc7ca5'}
+                      style={styles.input_field}
+                      value={password}
+                      onChangeText={val=>setPassword(val)}
+                      />
+
+                    <Button name={"Log in"} handlePress={signInUser} />
 
                     <TouchableWithoutFeedback onPress={()=>navigation.navigate('Forgot password')}>
                      <Text style={styles.forgot_pass}>Forgot password?</Text>
@@ -81,13 +111,14 @@ const styles = StyleSheet.create({
     input_field:{
       width:.65*width,
       height:37,
-      backgroundColor:'#fff',
-      opacity:.2,
-      borderBottomColor:'#fff',
+      backgroundColor:'#b13476',
+      borderBottomColor:'#cc7ca5',
       borderBottomWidth:3,
       borderStyle:'solid',
       color:'#fff',
-      marginBottom:17
+      marginBottom:17,
+      fontSize:15,
+      paddingLeft:5
     },
     create_account:{
       fontSize:18,

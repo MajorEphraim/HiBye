@@ -1,10 +1,10 @@
 import React, {useState, createContext} from "react";
-import { signInUser } from '../services/authService'
+import { signInUser, getUserId, signOutUser } from '../services/authService'
 
 export const AuthContext = createContext()
 
 export const AuthProvider =({ children })=>{
-    const [userToken, setUserToken] = useState(null)
+    const [userId, setUserId] = useState(null)
     const [isLoading, setIsLoading] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
 
@@ -18,22 +18,45 @@ export const AuthProvider =({ children })=>{
             if(response.error)
                 setErrorMsg(response.message)
             else
-                //setUserToken(response)
-                console.log("Responce ",response)
+            setUserId(response.uid)
         } catch (error) {
             setErrorMsg("Something went wrong: ", error)
+            setIsLoading(false)
         }
-        setUserToken(token)
-        setIsLoading(false)
     }
 
-    const signOut = ()=>{
-        setUserToken(null)
-        setIsLoading(false)
+    const useLocalUserId= async()=>{
+        try {
+            setIsLoading(true)
+            const userId = await getUserId()
+            setIsLoading(false)
+            if(userId)
+                setUserId(userId)
+        } catch (error) {
+            setErrorMsg(error.message)
+            setIsLoading(false)
+        }
+    }
+
+    const signOut = async()=>{
+        try {
+            setIsLoading(true)
+            const resp = await signOutUser()
+
+            if(resp.error){
+                setErrorMsg(resp.message)
+            }else{
+                setUserId(null)
+            }
+            setIsLoading(false)
+            
+        } catch (error) {
+            
+        }
     }
 
     return (
-        <AuthContext.Provider value={{userToken, isLoading, errorMsg, signIn, signOut}}>
+        <AuthContext.Provider value={{userId, isLoading, errorMsg, signIn, useLocalUserId, signOut}}>
             {children}
         </AuthContext.Provider>
     )

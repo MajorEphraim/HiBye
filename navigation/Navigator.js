@@ -1,15 +1,19 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthStack from './AuthStack';
 import HomeStack from './HomeStack';
 import { AuthContext } from '../context/AuthContext'
 
 export default function Navigator() {
+  const { userId, useLocalUserId} = useContext(AuthContext)
+
+  useEffect(()=>{
+    useLocalUserId()
+  },[])
   
-  const { userToken} = useContext(AuthContext)
     return (
         <NavigationContainer>
-            {userToken ? <HomeStack/> : <AuthStack/>}
+            {userId ? <HomeStack/> : <AuthStack/>}
         </NavigationContainer>
   );
 }

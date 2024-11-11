@@ -1,17 +1,15 @@
 import { View, Text, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
-export default LogoutModal = ({ modalVisible, setModalVisible }) => {
+export default LogoutModal = ({ modalVisible, handlePress }) => {
 
-  const handlePress = () => {
-    setModalVisible(false);
-  };
+ 
 
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
+      onRequestClose={() => handlePress()}
     >
       <View style={styles.modalOverlay}>
         {/* Actual modal content */}
@@ -22,7 +20,7 @@ export default LogoutModal = ({ modalVisible, setModalVisible }) => {
         </View>
 
         {/* Background overlay to close modal when tapping outside */}
-        <TouchableWithoutFeedback onPress={handlePress}>
+        <TouchableWithoutFeedback onPress={()=>handlePress()}>
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>
 

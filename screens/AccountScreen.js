@@ -4,6 +4,8 @@ import { StyleSheet, Text, View, Image, TextInput,
         Dimensions, TouchableWithoutFeedback } from 'react-native';
 import LogoutModal from '../modals/LogoutModal';
 import { HeaderContext } from '../context/HeaderContext';
+import { AuthContext } from '../context/AuthContext';
+
 
 import thulani from '../assets/pictures/thulani.jpg'
 
@@ -13,11 +15,23 @@ const width = Dimensions.get('window').width
 
 const AccountScreen = ()=>{
   const { openLogout, toggleOpenLogout } = useContext(HeaderContext)
+  const { signOut, errorMsg } = useContext(AuthContext)
+
+  const [err, setErr] = useState(errorMsg)
+
+  const handlePress = async()=>{
+    toggleOpenLogout()
+    try {
+      await signOut()
+    } catch (error) {
+      setErr(error.message)
+    }
+  }
 
     return(
         
             <>
-            <LogoutModal modalVisible={openLogout} setModalVisible={toggleOpenLogout}/>
+            <LogoutModal modalVisible={openLogout} handlePress={handlePress}/>
             <View style={styles.container}>
               <View style={styles.pic_details}>
                  <View style={styles.imageContainer}>
