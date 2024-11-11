@@ -3,6 +3,8 @@ import { auth, createUserWithEmailAndPassword,
 from '../firebase/configs'
 import * as SecureStore from 'expo-secure-store';
 
+const url = "https://console.firebase.google.com/project/hibye-3bb78/overview"
+
 const signUpUser = async(username,email,password)=>{
 
     try {
@@ -13,6 +15,19 @@ const signUpUser = async(username,email,password)=>{
             email,
             profilePic:null
         })
+
+        const resp = await fetch(url+"/"+user,{
+            method:'PUT',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                username,
+                email,
+                profilePic:null
+            })
+        })
+        const data = await resp.json()
+
+        console.log("DATA :",data)
         return user
     } catch (error) {
         return {error:true, message:"Something went wrong: "+error.message}
