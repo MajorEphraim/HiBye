@@ -1,7 +1,8 @@
 import { auth, createUserWithEmailAndPassword, 
-        signInWithEmailAndPassword, signOut } 
+        signInWithEmailAndPassword, signOut, deleteUser, 
+         } 
 from '../firebase/configs'
-import * as SecureStore from 'expo-secure-store';
+import { getItem, removeItem, setItem } from '../services/localStorageService'
 
 const url = "https://api-h4c7yaksja-uc.a.run.app/accounts"
 
@@ -38,10 +39,11 @@ const signUpUser = async(username,email,password)=>{
 }
 
 const signInUser = async(email,password)=>{
-
+    
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
+        await setItem('userId',user.uid)
         return user
     } catch (error) {
         return { error:true, message: "Something went wrong while signing in: "+ error.message };
@@ -52,8 +54,8 @@ const signOutUser = async()=>{
 
     try {
         await signOut(auth)
-        await SecureStore.deleteItemAsync('userId');
-        return {error:false}
+        const resp = await removeItem('userId')
+        return resp
     } catch (error) {
         return { error:true, message: "Something went wrong while signing in: "+ error.message };
     }
@@ -61,7 +63,7 @@ const signOutUser = async()=>{
 
 const getUserId = async()=>{
     try {
-        const userId = await SecureStore.getItemAsync('userId')
+        const userId = await getItem('userId')
         if(userId)
             return userId
         else
@@ -71,4 +73,15 @@ const getUserId = async()=>{
     }
 }
 
-export { signUpUser, signInUser, getUserId, signOutUser }
+const removeUser = async(user)=>{
+
+    try {
+        await deleteUser(user);
+        await removeItem('userId');
+        return {error:false}
+    } catch (error) {
+        return { error:true, message: "Something went wrong while signing in: "+ error.message };
+    }
+}
+
+export { signUpUser, signInUser, getUserId, signOutUser, removeUser }

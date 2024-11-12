@@ -7,6 +7,8 @@ import FriendRequests from '../modals/FriendRequests';
 import PeopleNum from '../modals/PeopleNum';
 import FiltersComp from '../components/FiltersComp';
 import { HeaderContext } from '../context/HeaderContext';
+import { NewChatsContext } from '../context/NewChatsContext';
+
 
 import pikachu from '../assets/pictures/jackie.jpg'
 import chris from '../assets/pictures/zero two.jpeg'
@@ -28,7 +30,9 @@ const NewChats = ()=>{
 
   const [isVisible, setIsVisible] = useState(false)
   const { openRequest, toggleOpenRequest } = useContext(HeaderContext)
+  const { people, isLoading, errorM ,updatePeople } = useContext(NewChatsContext)
 
+  console.log("PEOPLE, ",people)
   const handlePress = ()=>{
  
   }
@@ -36,7 +40,7 @@ const NewChats = ()=>{
     return(
         
             <View style={styles.container}>
-              <FindPeople setIsVisible={setIsVisible}/>
+              <FindPeople updatePeople={updatePeople} setIsVisible={setIsVisible}/>
               <FiltersComp/>
               <FlatList
                  data={chats}

@@ -1,87 +1,132 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TextInput, 
-        Dimensions, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+        Dimensions, TouchableWithoutFeedback, 
+        ActivityIndicator, KeyboardAvoidingView, Keyboard, Alert } from 'react-native';
 import LogoutModal from '../modals/LogoutModal';
 import { HeaderContext } from '../context/HeaderContext';
 import { AuthContext } from '../context/AuthContext';
 import { AccountContext } from '../context/AccountContext'
 import { pickImage, uploadImage } from '../services/mediaService'
 
-
-import thulani from '../assets/pictures/thulani.jpg'
-
-
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
-const AccountScreen = ()=>{
+const AccountScreen = ()=> {
     const { openLogout, toggleOpenLogout } = useContext(HeaderContext)
-    const {userId ,signOut, errorMsg } = useContext(AuthContext)
-    const { erMsg, account, updatePic, updateAccount , updateName ,isLoading } = useContext(AccountContext)
-
+    const { userId, signOut, errorMsg, removeAccount } = useContext(AuthContext)
+    const { erMsg, account, updatePic, updateAccount, updateName, isLoading } = useContext(AccountContext)
 
     const [err, setErr] = useState(errorMsg || erMsg)
+    const [username, setUsername] = useState(account.username)
 
-    const handlePress = async()=>{
-      toggleOpenLogout()
-      try {
-        await signOut()
-      } catch (error) {
-        setErr(error.message)
-      }
-    }
+    // Use a ref to store the latest username value
+    const usernameRef = useRef(username);
 
-    const openImage =async()=>{
-      try {
-        const uri = await pickImage()
-        // userId for auth and other for picture name
-        const url = await uploadImage(userId, userId, uri)
-        //await updatePic(url)
-      } catch (error) {
-        console.log(error.message)
-        setErr(error.message)
-      }
-    }
+    useEffect(() => {
+        // Keep the ref value up-to-date with the latest username
+        usernameRef.current = username;
+    }, [username]);
 
-    return(
-        
-            <>
-            <LogoutModal modalVisible={openLogout} handlePress={handlePress}/>
+    const handleKeyboardDismiss = async () => {
+        updateName(usernameRef.current); // Use the ref's current value for updateName
+    };
+
+    useEffect(() => {
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardDismiss);
+        return () => keyboardDidHideListener.remove();
+    }, []);
+
+    const handlePress = async () => {
+        toggleOpenLogout();
+        try {
+            await signOut();
+        } catch (error) {
+            setErr(error.message);
+        }
+    };
+
+    const openImage = async () => {
+        try {
+            const resp = await pickImage();
+            if (resp.error) {
+                setErr(resp.message);
+                return;
+            }
+            const output = await uploadImage(userId, userId, resp);
+            if (output.error) {
+                setErr(output.message);
+                return;
+            }
+            await updatePic(output);
+            updateAccount();
+        } catch (error) {
+            console.log(error.message);
+            setErr(error.message);
+        }
+    };
+
+  
+
+    const handleDeleteAccount = () => {
+      Alert.alert(
+        "Delete Account",
+        "Are you sure you want to delete your account? This action is irreversible.",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Delete",
+            style: "destructive",
+            onPress: async () => {
+              await removeAccount(account.profilePic);
+              if (erMsg) {
+                console.log(erMsg);
+              } else {
+                // Perform sign-out and navigate to login or home screen
+              }
+            },
+          },
+        ]
+      );
+    };
+
+
+    return (
+        <>
+            <LogoutModal modalVisible={openLogout} handlePress={handlePress} />
             <View style={styles.container}>
-
-              <View style={styles.pic_details}>
-                <View>
-                  <TouchableWithoutFeedback onPress={openImage}>
-                    <View style={styles.imageContainer}>
-                            <Image style={styles.pic} source={{uri:account.profilepic}}/>
-                      </View>
-                  </TouchableWithoutFeedback>
-                  {
-                    isLoading ?(
-                      <View style={styles.loadingContainer}>
-                              <ActivityIndicator size='small' color='#A30D5B'/>
-                      </View>
-                    ):null
-                  }
+                <View style={styles.pic_details}>
+                    <TouchableWithoutFeedback onPress={openImage}>
+                        <View style={styles.imageContainer}>
+                            <Image style={styles.pic} source={account.profilePic ? { uri: account.profilePic } : null} />
+                        </View>
+                    </TouchableWithoutFeedback>
+                    {isLoading && (
+                        <View style={styles.loadingContainer}>
+                            <ActivityIndicator size="small" color="#A30D5B" />
+                        </View>
+                    )}
+                    <Text style={styles.emailText}>{account.email}</Text>
+                    <KeyboardAvoidingView>
+                        <TextInput
+                            onChangeText={(val) => setUsername(val)}
+                            value={username}
+                            style={styles.nameInput}
+                        />
+                    </KeyboardAvoidingView>
                 </View>
-                  <Text style={styles.emailText}>{account.email}</Text>
-                  <TextInput style={styles.nameInput} value={account.username}/>
-              </View>
-
-              <TouchableWithoutFeedback>
-                <View style={styles.button}>
-                  <Text style={styles.button_text}>Delete account</Text>
-                </View>
-              </TouchableWithoutFeedback>
-              <StatusBar style="light" backgroundColor='#A30D5B'/>
+                <TouchableWithoutFeedback onPress={handleDeleteAccount}>
+                    <View style={styles.button}>
+                        <Text style={styles.button_text}>Delete account</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+                <StatusBar style="light" backgroundColor="#A30D5B" />
             </View>
-            </>
-        
-    )
-}
+        </>
+    );
+};
 
-export default AccountScreen
+export default AccountScreen;
 
 const styles = StyleSheet.create({
     container: {

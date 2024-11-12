@@ -33,7 +33,6 @@ const updateAccountDetails =async(userId,details)=>{
         })
     
         if (!resp.ok) {
-            console.log("DDD error ",resp.statusText)
             throw new Error(`Failed to update account details: ${resp.statusText}`);
         }
     } catch (error) {
@@ -61,16 +60,15 @@ const fetchAccountDetails = async(userId)=>{
 
 }
 
-const deleteAccountDetails = async() =>{
+const deleteAccount = async(userId) =>{
+
+    console.log("RANNNNNN")
     try {
         const resp = await fetch(url+"/"+userId,{method:'DELETE'})
 
         if (!resp.ok) {
-            throw new Error(`Failed to delete account details: ${resp.statusText}`);
+            throw new Error(`Failed to delete account details: ${resp.error}`);
         }
-
-        const data = await resp.json()
-        return data
         
     } catch (error) {
         throw new Error(`Failed to delete account details: ${error}`);
@@ -78,4 +76,4 @@ const deleteAccountDetails = async() =>{
 
 }
 
-export { uploadAccountDetails, updateAccountDetails, fetchAccountDetails, deleteAccountDetails }
+export { uploadAccountDetails, updateAccountDetails, fetchAccountDetails, deleteAccount }

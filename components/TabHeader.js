@@ -5,8 +5,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { HeaderContext } from '../context/HeaderContext'
-import thulani from '../assets/pictures/thulani.jpg'
-
+import { AccountContext } from '../context/AccountContext'
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
@@ -15,13 +14,15 @@ export default TabHeader = ()=>{
     const navigation = useNavigation()
     const route = useRoute()
     const { toggleOpenRequest } = useContext(HeaderContext)
+    const { account } = useContext(AccountContext)
+
 
     return(
         <View style={styles.container}>
             <View style={styles.image_name}>
                 <TouchableWithoutFeedback onPress={()=>navigation.navigate("Account")}>
                     <View style={styles.imageContainer}>
-                        <Image style={styles.pic} source={thulani}/>
+                        <Image style={styles.pic} source={ account.profilePic ? {uri:account.profilePic}:null}/>
                     </View>
                 </TouchableWithoutFeedback>
 

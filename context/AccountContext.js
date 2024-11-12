@@ -18,7 +18,6 @@ export const AccountProvider =({ children })=>{
 
     const updateName = async(username)=>{
         setIsLoading(true)
-
         try {
             await updateAccountDetails(userId,{username})
             setAccount(prevState=>({...prevState,username}))

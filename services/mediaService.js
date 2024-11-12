@@ -1,7 +1,8 @@
 import * as ImagePicker from 'expo-image-picker';
-import { storage, ref, uploadBytesResumable, getDownloadURL } from '../firebase/configs'
+import { storage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from '../firebase/configs'
 
 const pickImage = async () => {
+ try {
   const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
   if (permissionResult.status !== 'granted') {
@@ -19,7 +20,10 @@ const pickImage = async () => {
   if (!result.canceled) {
     return result.assets[0].uri; // or result.base64 if needed
   }
-  return null;
+  return({error:true, message:"Something went wrong"})
+ } catch (error) {
+  return({error:true, message:error.message})
+ }
 };
 
 const uploadImage = async(userId, imageName, imageUri)=>{
@@ -42,6 +46,21 @@ const uploadImage = async(userId, imageName, imageUri)=>{
   }
 }
 
-export {pickImage, uploadImage}
+const deleteImage = async(userId, imageName)=>{
+  try {
+    const imagePath = userId === imageName ?
+               `profilePics/${imageName}.jpg` :
+               `pictures/${imageName}.jpg`
+
+    const imageRef = ref(storage,imagePath) 
+    await deleteObject(imageRef);
+    return url
+  } catch (error) {
+    return({error:true, message:error.message})
+  }
+}
+
+
+export {pickImage, uploadImage, deleteImage}
 
 

@@ -5,12 +5,12 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import SearchBar from './SearchBar';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-export default FindPeople = ({setIsVisible})=>{
+export default FindPeople = ({updatePeople,setIsVisible})=>{
 
     const [search, setSearch] = useState('')
 
-    const handlePress = ()=>{
-      
+    const handlePress = async()=>{
+      await updatePeople()
     }
   
     const handleSearch = (val)=>{

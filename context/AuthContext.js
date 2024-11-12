@@ -1,6 +1,10 @@
-import React, {useState, createContext} from "react";
+import React, {useState, createContext, useContext} from "react";
+import { Alert } from 'react-native'
 import { signInUser, getUserId, signOutUser } from '../services/authService'
-import * as SecureStore from 'expo-secure-store';
+import { auth } from '../firebase/configs'
+import { removeUser } from '../services/authService'
+import { deleteAccount } from '../services/accountService'
+import { deleteImage } from '../services/mediaService'
 
 export const AuthContext = createContext()
 
@@ -17,7 +21,6 @@ export const AuthProvider =({ children })=>{
             if(response.error)
                 setErrorMsg(response.message)
             else{
-                await SecureStore.setItemAsync('userId', response.uid);
                 setUserId(response.uid)
             }
 
@@ -60,9 +63,58 @@ export const AuthProvider =({ children })=>{
         }
     }
 
+    
+    const removeAccount = async(image)=>{
+
+        const user = auth.currentUser;
+
+        if (!user) {
+            setErrorMsg("No user is signed in");
+            
+  
+                Alert.alert(
+                "Sign Out",
+                "Your has expired! Sign out first for this action.",
+                [
+                    { text: "Cancel", style: "cancel" },
+                    {
+                    text: "Okay",
+                    style: "destructive",
+                        onPress: async () => {
+                            await signOut();
+                        },
+                    },
+                ]
+                );
+            
+            return;
+        }
+
+        try {
+            setIsLoading(true)
+            const output = await deleteImage(user.uid, user.uid)
+            console.log("Starttttt ")
+            if(image && output.error){
+                setErrorMsg(output.message)
+                return
+            }
+            console.log("HEREREREREREE")
+
+            await deleteAccount(user.uid)
+            await removeUser(user)
+            setIsLoading(false)
+        
+            setIsLoading(false)
+            
+        } catch (error) {
+            setErrorMsg(error.message)
+        }
+    }
+
+
 
     return (
-        <AuthContext.Provider value={{userId, isLoading, errorMsg, signIn, useLocalUserId, signOut}}>
+        <AuthContext.Provider value={{userId, isLoading, errorMsg, signIn, useLocalUserId, signOut, removeAccount}}>
             {children}
         </AuthContext.Provider>
     )
