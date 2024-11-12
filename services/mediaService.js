@@ -1,6 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
+import { storage, ref, uploadBytesResumable, getDownloadURL } from '../firebase/configs'
 
-export const pickImage = async () => {
+const pickImage = async () => {
   const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
   if (permissionResult.status !== 'granted') {
@@ -20,5 +21,27 @@ export const pickImage = async () => {
   }
   return null;
 };
+
+const uploadImage = async(userId, imageName, imageUri)=>{
+  try {
+    const imagePath = userId === imageName ?
+               `profilePics/${userId}.jpg` :
+               `pictures/${userId}.jpg`
+
+    const spaceRef = ref(storage,imagePath) 
+    const response = await fetch(imageUri)
+    const blob = await response.blob()
+
+    const uploadTask = uploadBytesResumable(spaceRef, blob)
+    await uploadTask
+
+    const url = await getDownloadURL(uploadTask.snapshot.ref)
+    return url
+  } catch (error) {
+    return({error:true, message:error.message})
+  }
+}
+
+export {pickImage, uploadImage}
 
 

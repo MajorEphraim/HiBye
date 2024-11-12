@@ -9,7 +9,6 @@ export const AuthProvider =({ children })=>{
     const [isLoading, setIsLoading] = useState(null)
     const [errorMsg, setErrorMsg] = useState(null)
 
-
     const signIn = async(email, password)=>{
         try {
             setIsLoading(true)
@@ -21,24 +20,28 @@ export const AuthProvider =({ children })=>{
                 await SecureStore.setItemAsync('userId', response.uid);
                 setUserId(response.uid)
             }
+
+            setIsLoading(false)
+
         } catch (error) {
-            setErrorMsg("Something went wrong: ", error)
+            setErrorMsg("Something went wrong: ", error.message)
             setIsLoading(false)
         }
     }
 
-    const useLocalUserId= async()=>{
+    const useLocalUserId = async () => {
         try {
-            setIsLoading(true)
-            const userId = await getUserId()
-            setIsLoading(false)
-            if(userId)
-                setUserId(userId)
+          setIsLoading(true);
+          const userId = await getUserId();
+          if (userId) {
+            setUserId(userId);
+          } 
         } catch (error) {
-            setErrorMsg(error.message)
-            setIsLoading(false)
+          setErrorMsg(error.message);
+        } finally {
+          setIsLoading(false);
         }
-    }
+      };
 
     const signOut = async()=>{
         try {
@@ -53,7 +56,7 @@ export const AuthProvider =({ children })=>{
             setIsLoading(false)
             
         } catch (error) {
-            
+            setErrorMsg(resp.message)
         }
     }
 

@@ -2,7 +2,6 @@ import { auth, createUserWithEmailAndPassword,
         signInWithEmailAndPassword, signOut } 
 from '../firebase/configs'
 import * as SecureStore from 'expo-secure-store';
-import { fetchAccountDetails } from './accountService'
 
 const url = "https://api-h4c7yaksja-uc.a.run.app/accounts"
 

@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeStack from "./HomeStack";
 import NewChats from "../screens/NewChats";
 import MyChats from "../screens/ChatsScreen";
 import TabHeader from "../components/TabHeader";

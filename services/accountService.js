@@ -33,10 +33,13 @@ const updateAccountDetails =async(userId,details)=>{
         })
     
         if (!resp.ok) {
+            console.log("DDD error ",resp.statusText)
             throw new Error(`Failed to update account details: ${resp.statusText}`);
         }
     } catch (error) {
-        throw new Error(`Failed to update account details: ${error}`);
+        console.log("DDD error ",error)
+        throw new Error(`Failed to update account details: ${error.message}`);
+
     }
 }
 

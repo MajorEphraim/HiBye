@@ -14,13 +14,13 @@ export const AccountProvider =({ children })=>{
     })
 
     const [isLoading, setIsLoading] = useState(false)
-    const [errorMsg, setErrorMsg] = useState(null)
+    const [erMsg, setErrorMsg] = useState(null)
 
     const updateName = async(username)=>{
         setIsLoading(true)
 
         try {
-            await updateAccountDetails({username})
+            await updateAccountDetails(userId,{username})
             setAccount(prevState=>({...prevState,username}))
             setIsLoading(false)
         } catch (error) {
@@ -34,22 +34,20 @@ export const AccountProvider =({ children })=>{
         setIsLoading(true)
 
         try {
-            await updateAccountDetails({image:profilePic})
+            await updateAccountDetails(userId,{profilePic})
             setAccount(prevState=>({...prevState,profilePic}))
             setIsLoading(false)
         } catch (error) {
-            
+            setErrorMsg(error.message)
         }
     }
 
     const updateAccount = async()=>{
         setIsLoading(true)
         try {
-            
         const data = await fetchAccountDetails(userId)
         setAccount(data)
         setIsLoading(false)
-
         } catch (error) {
             setErrorMsg(error.message) 
             setIsLoading(false)
@@ -57,7 +55,7 @@ export const AccountProvider =({ children })=>{
     }
 
     return (
-        <AccountContext.Provider value={{account, isLoading,errorMsg, updateName, updatePic, updateAccount}}>
+        <AccountContext.Provider value={{account, isLoading,erMsg, updateName, updatePic, updateAccount}}>
             {children}
         </AccountContext.Provider>
     )
