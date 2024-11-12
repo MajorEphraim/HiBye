@@ -1,5 +1,6 @@
-import React, {useState, createContext} from "react";
+import React, {useState, createContext, useContext} from "react";
 import { fetchPeople } from '../services/chatsService'
+import { AuthContext } from './AuthContext'
 
 export const NewChatsContext = createContext()
 
@@ -9,12 +10,14 @@ export const NewChatsProvider =({ children })=>{
     const [isLoading, setIsLoading] = useState(null)
     const [errorM, setErrorM] = useState(null)
 
+    const { userId } = useContext(AuthContext)
+
 
     const updatePeople = async()=>{
         try {
             setIsLoading(true)
             const newPeople = await fetchPeople()
-            setPeople(newPeople)
+            setPeople(newPeople.filter(item=>item.id !== userId))
         } catch (error) {
             setErrorM(error.message)
             setIsLoading(false)

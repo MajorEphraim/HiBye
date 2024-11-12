@@ -103,11 +103,8 @@ exports.fetchAccounts = functions.https
       try {
         const limit = 15; // Number of accounts to fetch per request
         const offset = parseInt(req.query.offset) ||
-     0; // Starting point for pagination
-
-        // Fetch accounts from Firestore with pagination
+     0;
         const accountsRef = db.collection("accounts")
-            .orderBy("createdAt") // Order by a field like `createdAt`
             .offset(offset)
             .limit(limit);
 
@@ -116,7 +113,7 @@ exports.fetchAccounts = functions.https
         // Extract account data from Firestore snapshot
         const accounts = snapshot
             .docs
-            .map((doc) => ({id: doc.id,
+            .map((doc) => ({...{id: doc.id, status: "request"},
               ...doc.data()}));
 
         // Send accounts and next offset back in response

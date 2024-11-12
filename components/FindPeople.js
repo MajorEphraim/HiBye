@@ -5,21 +5,19 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import SearchBar from './SearchBar';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-export default FindPeople = ({updatePeople,setIsVisible})=>{
-
-    const [search, setSearch] = useState('')
+export default FindPeople = ({updatePeople, search, setSearch})=>{
 
     const handlePress = async()=>{
       await updatePeople()
     }
   
-    const handleSearch = (val)=>{
-      setSearch(val)
-    }
-
     return(
         <View style={styles.container}>
-            <SearchBar placeholder={"search by name or email"} value={search} handleSearch={handleSearch} />
+            <SearchBar 
+                placeholder={"search by name or email"} 
+                value={search} 
+                handleSearch={setSearch}
+            />
             <TouchableOpacity onPress={handlePress}>
                 <MaterialIcons name="refresh" size={32} color="#A30D5B" />
             </TouchableOpacity>

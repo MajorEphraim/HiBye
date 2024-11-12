@@ -32,7 +32,7 @@ export default PersonComp =({id, name, handlePress, pic, status})=>{
             <View id={id} style={styles.container}>
                 <View style={styles.firstView}>
                     <View style={styles.imageContainer}>
-                        <Image source={pic} style={styles.pic}/>
+                        <Image source={{uri:pic}} style={styles.pic}/>
                     </View>
                         <Text style={styles.name}>{name}</Text>
                 </View>

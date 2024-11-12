@@ -2,21 +2,22 @@ const url = 'https://fetchaccounts-h4c7yaksja-uc.a.run.app/accounts'
 
 let currOffset = 0;
 
-const fetchPeople = async(currOffset)=>{
+const fetchPeople = async()=>{
 
     try {
         const resp = await fetch(url+"offset?="+currOffset)
         if(!resp.ok)
             throw new Error("HTTP error!: "+resp.error);
     
-        const { people, offset } = await resp.json()
-        currOffset = offset
-    
-        return people
+        const { accounts, nextOffset } = await resp.json()
+        currOffset = nextOffset
+
+        return accounts
             
-        
     } catch (error) {
         throw new Error("Something went wrong while fetching people");
         
     }
 }
+
+export { fetchPeople }

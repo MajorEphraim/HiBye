@@ -1,17 +1,17 @@
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native'
 
-export default FiltersComp=({placeholder, value, handleSearch})=>{
+export default FiltersComp=({setStatus})=>{
     return(
         <View style={styles.filtersContainer}>
-            <TouchableOpacity style={{...styles.filterBar, backgroundColor:'#D9D9D9'}}>
+            <TouchableOpacity onPress={()=>setStatus('requested')} style={{...styles.filterBar, backgroundColor:'#D9D9D9'}}>
                 <Text style={{...styles.filterText,color:'#000'}}>requested</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{...styles.filterBar, backgroundColor:'#1AD166'}}>
+            <TouchableOpacity onPress={()=>setStatus('accepted')} style={{...styles.filterBar, backgroundColor:'#1AD166'}}>
                 <Text style={{...styles.filterText,color:'#fff'}}>accepted</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={{...styles.filterBar, backgroundColor:'#A30D5B'}}>
+            <TouchableOpacity onPress={()=>setStatus('request')} style={{...styles.filterBar, backgroundColor:'#A30D5B'}}>
                 <Text style={{...styles.filterText,color:'#fff'}}>request</Text>
             </TouchableOpacity>
         </View>
