@@ -36,7 +36,6 @@ const updateAccountDetails =async(userId,details)=>{
             throw new Error(`Failed to update account details: ${resp.statusText}`);
         }
     } catch (error) {
-        console.log("DDD error ",error)
         throw new Error(`Failed to update account details: ${error.message}`);
 
     }
@@ -62,7 +61,6 @@ const fetchAccountDetails = async(userId)=>{
 
 const deleteAccount = async(userId) =>{
 
-    console.log("RANNNNNN")
     try {
         const resp = await fetch(url+"/"+userId,{method:'DELETE'})
 

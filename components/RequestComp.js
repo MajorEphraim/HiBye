@@ -4,37 +4,13 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default RequestComp =({id, name, pic, status, date})=>{
-    const currentIcon = ()=>{
-
-        let iconName
-        if(status === "request")
-            iconName = "circle-plus"
-        else if(status === "accepted")
-            iconName = "handshake-simple"
-        else
-            iconName = "paper-plane"
-
-        return iconName
-    }
-
-    const currentColor = ()=>{
-
-        let color
-        if(status === "request")
-            color = "#A30D5B"
-        else if(status === "accepted")
-            color = "#1AD166"
-        else
-            color = "#D9D9D9"
-
-        return color
-    }
+   
 
     return(
             <View id={id} style={styles.container}>
                 <View style={styles.firstView}>
                     <View style={styles.imageContainer}>
-                        <Image source={pic} style={styles.pic}/>
+                        <Image source={{uri:pic}} style={styles.pic}/>
                     </View>
                         <Text style={styles.name}>{name}</Text>
                 </View>

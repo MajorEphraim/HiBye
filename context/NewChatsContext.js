@@ -1,5 +1,5 @@
 import React, {useState, createContext, useContext} from "react";
-import { fetchPeople } from '../services/chatsService'
+import { fetchPeople } from '../services/requestsService'
 import { AuthContext } from './AuthContext'
 
 export const NewChatsContext = createContext()

@@ -8,22 +8,55 @@ import PeopleNum from '../modals/PeopleNum';
 import FiltersComp from '../components/FiltersComp';
 import { HeaderContext } from '../context/HeaderContext';
 import { NewChatsContext } from '../context/NewChatsContext';
+import { AuthContext } from '../context/AuthContext';
+import { RequestsContext } from '../context/RequestsContext';
+import { sendRequests } from '../services/requestsService'
 
 const NewChats = ()=>{
 
   const [isVisible, setIsVisible] = useState(false)
-  const { openRequest, toggleOpenRequest } = useContext(HeaderContext)
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('')
+  const [erMsg, setErMsg] = useState(null)
+  
+  const { openRequest, toggleOpenRequest } = useContext(HeaderContext)
   const { people, isLoading, errorM ,updatePeople } = useContext(NewChatsContext)
+  const { userId } = useContext(AuthContext)
+  const { listenToRequestAndAccounts, requests } = useContext(RequestsContext)
+  
+  const [data, setData] = useState(people)
+
+
+  useEffect(()=>{
+    updatePeople()
+    listenToRequestAndAccounts(userId)
+  },[])
+  
+  const mergeItems = (arr1, arr2)=>{
+    const arr3 = []
+    arr1.forEach(item=>{
+      const index = arr2.findIndex(({receiverId})=>item.id == receiverId) // look for match
+      if (index == -1) {
+        arr3.push(item)
+      }else{
+        arr3.push({...item,...arr2[index]})
+      }
+    })
+    return arr3
+  }
 
     useEffect(()=>{
-        updatePeople()
-        console.log(people)
-    },[])
+        setData(mergeItems(people,requests))
+    },[requests,people])
 
-    const handlePress = ()=>{
-      
+
+
+    const handlePress = async(personId)=>{
+      try {
+        await sendRequests(userId, personId)
+      } catch (error) {
+        setErMsg(error.message)
+      }
     }
 
     return(
@@ -32,7 +65,7 @@ const NewChats = ()=>{
               <FindPeople updatePeople={updatePeople} search={search} setSearch={setSearch}/>
               <FiltersComp setStatus={setStatus}/>
               <FlatList
-                 data={people && people.filter(item=>(item.username.toLowerCase().includes(search.toLowerCase())
+                 data={data && data.filter(item=>(item.username.toLowerCase().includes(search.toLowerCase())
                  || item.email.toLowerCase().includes(search.toLowerCase()))
                  && item.status.includes(status)
                 )}
@@ -40,11 +73,11 @@ const NewChats = ()=>{
                  style={styles.listContainer}
                  renderItem={({item})=>(
                    <PersonComp id={item.id} name={item.username} handlePress={handlePress}
-                              pic={item.profilePic} status={"request"}
+                              pic={item.profilePic} status={item.status}
                    />
                   )}               
                   />
-                <FriendRequests modalVisible={openRequest} setModalVisible={toggleOpenRequest}/>
+                <FriendRequests requests={requests.filter(item=>item.receiverId === userId)} modalVisible={openRequest} setModalVisible={toggleOpenRequest}/>
                 <PeopleNum modalVisible={isVisible} setModalVisible={setIsVisible}/>
                 <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>

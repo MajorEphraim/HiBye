@@ -38,11 +38,21 @@ export default PersonComp =({id, name, handlePress, pic, status})=>{
                 </View>
 
 
-                <TouchableOpacity style={styles.statusContainer} onPress={()=>handlePress(id)}>
-                    <FontAwesome6 name={currentIcon()} size={20} color={currentColor()} />
-                    <Text style={styles.statusText}>{status}</Text>
-                </TouchableOpacity>
-            </View>
+                {
+                    status === 'requested' ?(
+                        <View style={styles.statusContainer} onPress={()=>handlePress(id)}>
+                            <FontAwesome6 name={currentIcon()} size={20} color={currentColor()} />
+                            <Text style={styles.statusText}>{status}</Text>
+                        </View>
+                    ):(
+                        <TouchableOpacity style={styles.statusContainer} onPress={()=>handlePress(id)}>
+                            <FontAwesome6 name={currentIcon()} size={20} color={currentColor()} />
+                            <Text style={styles.statusText}>{status}</Text>
+                        </TouchableOpacity>
+
+                    )
+                }
+                    </View>
     )
 }
 

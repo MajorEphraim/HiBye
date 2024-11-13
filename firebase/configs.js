@@ -5,7 +5,7 @@ import {initializeAuth, getReactNativePersistence  ,getAuth, onAuthStateChanged,
     signInWithEmailAndPassword,sendEmailVerification,updateProfile, 
     signOut, deleteUser } from "firebase/auth";
 
-import { doc, setDoc, getFirestore  } from 'firebase/firestore';
+import { doc, setDoc, getFirestore, collection,query, where, onSnapshot, getDocs  } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'
 
 import * as SecureStore from 'expo-secure-store';
@@ -31,5 +31,6 @@ const storage = getStorage(app)
 
 export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
         db, signOut, doc, setDoc, storage, ref, uploadBytesResumable, 
-        getDownloadURL, deleteObject, deleteUser, onAuthStateChanged
+        getDownloadURL, deleteObject, deleteUser, onAuthStateChanged,
+        collection,query, where, onSnapshot, getDocs
       }

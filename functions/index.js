@@ -103,11 +103,10 @@ app.post("/friend-requests/:id", async (req, res) => {
 
   // Format current date as YYYY/MM/DD
   const currentDate = new Date();
-  const dateSent = `${currentDate.getFullYear()}
-  /${(currentDate.getMonth() + 1).
-      toString().padStart(2, "0")}
-    /${currentDate.getDate().
-      toString().padStart(2, "0")}`;
+  const dateSent = `${currentDate.
+      getFullYear()}/${(currentDate.
+      getMonth()+1)}/${currentDate
+      .getDate()}`;
 
   try {
     await db.collection("friend requests").add({
@@ -115,7 +114,7 @@ app.post("/friend-requests/:id", async (req, res) => {
       receiverId: personId,
       timeSent: Date.now(),
       status: "requested",
-      dateSent: dateSent,
+      dateSent,
     });
 
     res.status(200).json({
@@ -126,6 +125,23 @@ app.post("/friend-requests/:id", async (req, res) => {
     res.status(500).json({
       error: "Failed to process a friend request",
     });
+  }
+});
+
+app.patch("/friend-requests/:id", async (req, res) => {
+  const requestId = req.params.id;
+  const {status} = req.body;
+
+  try {
+    await db.collection("friend requests")
+        .doc(requestId).update({status});
+
+    res.json({
+      message: "Friend request processed successfully"});
+  } catch (error) {
+    res.status(500).json(
+        {error: "Failed to process friend request updates",
+          message: error.message});
   }
 });
 

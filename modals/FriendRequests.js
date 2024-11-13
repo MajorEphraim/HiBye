@@ -12,13 +12,7 @@ import { View, Text, Modal, Button, StyleSheet,
 import chris from '../assets/pictures/zero two.jpeg'
 import abdul from '../assets/pictures/tommy.jpeg'
 
-const requests = [
-    {id:"1", name:"Jackie", status:"requested", profilePic:pikachu, date:'2024/11/01'},
-    {id:"2",name:"Zero Two", status:"requested", profilePic:chris, date:'today'},
-    {id:"3", name:"Tommy", status:"requested", profilePic:abdul, date:'last week'},
-]
-
-export default FriendRequests=({modalVisible, setModalVisible})=> {
+export default FriendRequests=({requests,modalVisible, setModalVisible})=> {
   // State to control the modal visibility
   
   return (
@@ -40,14 +34,14 @@ export default FriendRequests=({modalVisible, setModalVisible})=> {
                 <View style={styles.headingContainer}>
                     <Text style={styles.heading}>Friend requests</Text>
                     <View style={styles.badge}>
-                        <Text style={styles.count}>3</Text>
+                        <Text style={styles.count}>{requests.length}</Text>
                     </View>
                 </View>
 
                 <FlatList
                     data={requests}
                     style={styles.listContainer}
-                    renderItem={({item})=><RequestComp id={item.id} name={item.name} pic={item.profilePic} status={item.status} date={item.date}/>}
+                    renderItem={({item})=><RequestComp id={item.id} name={item.username} pic={item.profilePic} status={item.status} date={item.dateSent}/>}
                 />
             </View>
         </View>
