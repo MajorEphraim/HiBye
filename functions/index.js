@@ -96,6 +96,40 @@ app.get("/accounts/:id", async (req, res) => {
   }
 });
 
+
+app.post("/friend-requests/:id", async (req, res) => {
+  const userId = req.params.id;
+  const {personId} = req.body;
+
+  // Format current date as YYYY/MM/DD
+  const currentDate = new Date();
+  const dateSent = `${currentDate.getFullYear()}
+  /${(currentDate.getMonth() + 1).
+      toString().padStart(2, "0")}
+    /${currentDate.getDate().
+      toString().padStart(2, "0")}`;
+
+  try {
+    await db.collection("friend requests").add({
+      senderId: userId,
+      receiverId: personId,
+      timeSent: Date.now(),
+      status: "requested",
+      dateSent: dateSent,
+    });
+
+    res.status(200).json({
+      message: "Friend request sent successfully",
+    });
+  } catch (error) {
+    console.error("Error processing friend request:", error);
+    res.status(500).json({
+      error: "Failed to process a friend request",
+    });
+  }
+});
+
+
 exports.api = functions.https.onRequest(app);
 
 exports.fetchAccounts = functions.https
