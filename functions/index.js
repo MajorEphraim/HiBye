@@ -128,14 +128,29 @@ app.post("/friend-requests/:id", async (req, res) => {
   }
 });
 
+const createChat = async (user1, user2 )=>{
+  try {
+    await db.collection("chats")
+        .add({
+          lastSender: null,
+          lastMessage: null,
+          timeSent: Date.now(),
+          users: [user1, user2],
+        });
+  } catch (error) {
+    throw new Error("Failed to created a chat, something went wrong");
+  }
+};
+
 app.patch("/friend-requests/:id", async (req, res) => {
   const requestId = req.params.id;
-  const {status} = req.body;
+  const {status, senderId, userId} = req.body;
 
   try {
     await db.collection("friend requests")
         .doc(requestId).update({status});
 
+    await createChat(senderId, userId);
     res.json({
       message: "Friend request processed successfully"});
   } catch (error) {

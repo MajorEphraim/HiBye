@@ -13,7 +13,15 @@ export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress
 
                     <View style={styles.name_message}>
                         <Text style={styles.name}>{name}</Text>
-                        <Text style={{...styles.lastMessage,fontWeight: unread ? 'bold':null}} numberOfLines={1}>{ lastSender === userId ?"You: "+ lastMessage:lastMessage}</Text>
+                        {
+                            lastMessage === null ?(
+                                <Text style={styles.firstMessage} numberOfLines={1}>Say hi! to your new friend</Text>
+
+                            ):(
+                                
+                                <Text style={{...styles.lastMessage,fontWeight: unread ? 'bold':null}} numberOfLines={1}>{ lastSender === userId ?"You: "+ lastMessage:lastMessage}</Text>
+                            )
+                        }
                     </View>
                 </View>
 
@@ -29,9 +37,17 @@ export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress
                 </View>
 
                 <View style={styles.lastView}>
-                    <Text style={{...styles.latestTime,...(unread && lastSender !== userId ?{color:'#AD3173',fontWeight:'bold'}:{color:'#000',fontWeight:null})}}>{latestTime}</Text>
+                {
+                            lastMessage === null ?(
+                                <View/>
+
+                            ):(
+                                
+                                <Text style={{...styles.latestTime,...(unread && lastSender !== userId ?{color:'#AD3173',fontWeight:'bold'}:{color:'#000',fontWeight:null})}}>{latestTime}</Text>
+                            )
+                        }
                 </View>
-            </View>
+            </View> 
         </TouchableWithoutFeedback>
     )
 }
@@ -84,6 +100,12 @@ const styles = StyleSheet.create({
     },
     lastMessage:{
         fontSize:14,
+    },
+    firstMessage:{
+        fontSize:14,
+        color:'#A30D5B',
+        fontStyle:'italic',
+        fontWeight:'bold'
     },
     messageBadge:{
         width:30,

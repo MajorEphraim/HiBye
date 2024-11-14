@@ -42,19 +42,17 @@ const sendRequests = async(userId, personId)=>{
     } 
 }
 
-const updateRequests = async(requestId, status)=>{
+const updateRequests = async(requestId, status, senderId, userId)=>{
     try {
         const resp = await fetch(apiUrl+"/"+requestId,{
             method:'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body:JSON.stringify({status})
+            body:JSON.stringify({status, senderId, userId})
         })
 
         if(!resp.ok){
             throw new Error(resp.error);
-            
         }
-
         
     } catch (error) {
         throw new Error(error.message);
@@ -64,31 +62,3 @@ const updateRequests = async(requestId, status)=>{
 
 export { fetchPeople, sendRequests, updateRequests }
 
-
-
-
-const mergeArrays = (arr1, arr2) => {
- 
-    arr2.forEach(item=>{
-      const index = arr1.findIndex(({ id }) => id === item.id);
-      
-      if (index === -1) {
-        arr1.push(item);
-      } else {
-        arr1[index] = item;
-      }
-    })
-
-return arr1;
-};
-
-const mergeItems = (arr1, arr2)=>{
-
-const arr3 = []
-
-arr1.forEach(item=>{
-  const index = arr2.findIndex(({id})=>item.senderId === id || item.receiverId == id)
-  arr3.push({...item,...arr2[index]})
-})
-return arr3
-}

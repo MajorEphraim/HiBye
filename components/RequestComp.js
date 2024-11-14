@@ -1,15 +1,16 @@
+import { useState, useContext, useEffect } from 'react'
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { updateRequests } from '../services/requestsService'
-
-
-export default RequestComp =({id, name, pic, status, date})=>{
-   
+import { AuthContext } from '../context/AuthContext'
+export default RequestComp =({id, name, pic, status, date, senderId})=>{
+    
+    const { userId } = useContext(AuthContext)
     const handlePress = async(id,status)=>{
         try {
-            await updateRequests(id,status)
+            await updateRequests(id,status,senderId,userId)
         } catch (error) {
             console.log(error.message)
         }
@@ -25,8 +26,9 @@ export default RequestComp =({id, name, pic, status, date})=>{
                 </View>
 
                 <Text style={styles.date}>{date}</Text>
-
-                <View style={styles.iconsContainer}>
+                {
+                    status ==='accepted' ? (<Text style={{fontSize:13, color:'#1AD166'}}>accepted</Text>):
+                (<View style={styles.iconsContainer}>
                     <TouchableOpacity style={styles.statusContainer} onPress={()=>handlePress(id, "accepted")}>
                         <Ionicons name="person-add" size={24} color="#A30D5B" />
                         <Text style={styles.statusText}>accept</Text>
@@ -36,7 +38,8 @@ export default RequestComp =({id, name, pic, status, date})=>{
                         <MaterialCommunityIcons name="bell-remove" size={24} color="#676262" />                        
                         <Text style={styles.statusText}>ignore</Text>
                     </TouchableOpacity>
-                </View>
+                </View>)
+                }
             </View>
     )
 }

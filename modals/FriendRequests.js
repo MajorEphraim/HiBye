@@ -40,8 +40,14 @@ export default FriendRequests=({requests,modalVisible, setModalVisible})=> {
 
                 <FlatList
                     data={requests}
-                    style={styles.listContainer}
-                    renderItem={({item})=><RequestComp id={item.id} name={item.username} pic={item.profilePic} status={item.status} date={item.dateSent}/>}
+                      style={styles.listContainer}
+                      renderItem={({item})=><RequestComp id={item.id}
+                                                  name={item.username} 
+                                                  pic={item.profilePic} 
+                                                  status={item.status} 
+                                                  date={item.dateSent}
+                                                  senderId={item.senderId}  
+                                                  />}
                 />
             </View>
         </View>

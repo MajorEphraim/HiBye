@@ -30,6 +30,12 @@ const NewChats = ()=>{
   useEffect(()=>{
     updatePeople()
   },[])
+
+  useEffect(() => {
+    if (people && people.length > 0) {
+      setData(people);
+    }
+  }, [people]);
   
   const mergeItems = (arr1, arr2)=>{
     const arr3 = []
