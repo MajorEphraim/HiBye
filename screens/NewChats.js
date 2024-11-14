@@ -22,14 +22,13 @@ const NewChats = ()=>{
   const { openRequest, toggleOpenRequest } = useContext(HeaderContext)
   const { people, isLoading, errorM ,updatePeople } = useContext(NewChatsContext)
   const { userId } = useContext(AuthContext)
-  const { listenToRequestAndAccounts, requests } = useContext(RequestsContext)
+  const { requestInfo_r, requestInfo_s } = useContext(RequestsContext)
+
   
   const [data, setData] = useState(people)
 
-
   useEffect(()=>{
     updatePeople()
-    listenToRequestAndAccounts(userId)
   },[])
   
   const mergeItems = (arr1, arr2)=>{
@@ -39,17 +38,15 @@ const NewChats = ()=>{
       if (index == -1) {
         arr3.push(item)
       }else{
-        arr3.push({...item,...arr2[index]})
+        arr3.push({...item,...arr2[index],id:item.id})
       }
     })
     return arr3
   }
 
-    useEffect(()=>{
-        setData(mergeItems(people,requests))
-    },[requests,people])
-
-
+  useEffect(()=>{
+    setData(prev=>mergeItems(prev,requestInfo_s))
+  },[requestInfo_s])
 
     const handlePress = async(personId)=>{
       try {
@@ -77,7 +74,7 @@ const NewChats = ()=>{
                    />
                   )}               
                   />
-                <FriendRequests requests={requests.filter(item=>item.receiverId === userId)} modalVisible={openRequest} setModalVisible={toggleOpenRequest}/>
+                <FriendRequests requests={requestInfo_r.filter(item=>item.receiverId === userId)} modalVisible={openRequest} setModalVisible={toggleOpenRequest}/>
                 <PeopleNum modalVisible={isVisible} setModalVisible={setIsVisible}/>
                 <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>

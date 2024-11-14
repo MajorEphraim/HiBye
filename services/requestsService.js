@@ -63,3 +63,32 @@ const updateRequests = async(requestId, status)=>{
 }
 
 export { fetchPeople, sendRequests, updateRequests }
+
+
+
+
+const mergeArrays = (arr1, arr2) => {
+ 
+    arr2.forEach(item=>{
+      const index = arr1.findIndex(({ id }) => id === item.id);
+      
+      if (index === -1) {
+        arr1.push(item);
+      } else {
+        arr1[index] = item;
+      }
+    })
+
+return arr1;
+};
+
+const mergeItems = (arr1, arr2)=>{
+
+const arr3 = []
+
+arr1.forEach(item=>{
+  const index = arr2.findIndex(({id})=>item.senderId === id || item.receiverId == id)
+  arr3.push({...item,...arr2[index]})
+})
+return arr3
+}
