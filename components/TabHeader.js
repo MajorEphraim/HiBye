@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { View, StyleSheet, Image, Text,
-    TouchableWithoutFeedback, Dimensions } from "react-native";
+    TouchableWithoutFeedback, Dimensions, 
+    StatusBar, Platform } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { HeaderContext } from '../context/HeaderContext'
 import { AccountContext } from '../context/AccountContext'
@@ -40,13 +40,13 @@ export default TabHeader = ()=>{
 const styles = StyleSheet.create({
     container:{
         width:'100%',
-        height:.1*height,
+        height:.08*height,
         backgroundColor:'#A30D5B',
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
-        marginTop:20,
-        paddingHorizontal:15
+        paddingHorizontal:15,
+        marginTop:StatusBar.currentHeight
     },
     imageContainer:{
         height:.049*height,

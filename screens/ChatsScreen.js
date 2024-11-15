@@ -44,9 +44,9 @@ const ChatsScreen = ()=>{
                         keyExtractor={item=>item.id}
                         style={styles.listContainer}
                         renderItem={({item})=>(
-                          <ChatComp id={item.id} name={"John"} lastMessage={item.lastMessage} 
+                          <ChatComp id={item.id} name={item.chatName} lastMessage={item.lastMessage} 
                             count={0} latestTime={item.timeSent} handlePress={handlePress}
-                            pic={null} lastSender={item.lastSender} unread={false}
+                            pic={item.chatIcon} lastSender={item.lastSender} unread={false}
                           />
                         )}               
                     />

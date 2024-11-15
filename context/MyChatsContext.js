@@ -5,8 +5,10 @@ import { AuthContext } from './AuthContext';
 export const MyChatsContext = createContext()
 
 export const MyChatsProvider =({ children })=>{
-    const [chats, setChats] = useState([])
+    const [chatsInfo, setChatsInfo] = useState([])
+    const [userDetails, setUserDetails] = useState([])
     const [messages, setMessages] = useState([])
+    const [chats, setChats] = useState([])
 
 
     const [isLoading, setIsLoading] = useState(null)
@@ -19,20 +21,44 @@ export const MyChatsProvider =({ children })=>{
         //setIsLoading(false)
     }
 
+    const updateArray = (arr1, item) => {
+        const index = arr1.findIndex(({ id }) => item.id === id);
+        let newArr = [...arr1];
+
+        if (index === -1) {
+            newArr.push(item);
+        } else {
+            newArr[index] = { ...newArr[index], ...item };
+        }
+
+        return newArr;
+    };
+
+    const mergeItems = (arr1, arr2)=>{
+        let newArr = []
+        arr1.forEach(item=>{
+            const friendUserId = item.users.filter(id=>id !== userId)[0]
+            const index = arr2.findIndex(({id})=>friendUserId === id)
+            if (index !== -1) {
+                newArr.push({...item,...{chatName:arr2[index].username, chatIcon:arr2[index].profilePic}})
+            }
+        })
+       
+        return newArr
+      }
+
     useEffect(() => {
         if (!userId) return; // Exit if userId is undefined
-        
-        // Define the query to find documents where "users" array contains "userId"
+        console.log("USER ID ", userId)
         const q = query(collection(db, "chats"), where("users", "array-contains", userId));
     
-        // Set up the onSnapshot listener
         const unsubscribe = onSnapshot(q, (snapshot) => {
-            const chats = [];
+            const chatsInfo = [];
             snapshot.forEach((doc) => {
-                chats.push({ ...doc.data(), id: doc.id });
+                chatsInfo.push({ ...doc.data(), id: doc.id });
             });
             
-            setChats(chats); // Update state with the chats found
+            setChatsInfo(chatsInfo); // Update state with the chats found
         }, (error) => {
             console.error("Error fetching chats:", error); // Log any errors
         });
@@ -40,11 +66,40 @@ export const MyChatsProvider =({ children })=>{
         // Cleanup function to unsubscribe on unmount or userId change
         return () => unsubscribe();
     }, [userId]);
-    
+
 
     useEffect(()=>{
+        const unsubscribeFunctions = [];
+
+        chatsInfo.forEach((item) => {
+            const users = item.users
+            const friendUserId = users.filter(id=>id !== userId)[0]
+            const q = doc(db, "accounts", friendUserId);
+            
+            const unsubscribe = onSnapshot(q, (snap) => {
+                if (snap.exists()) {
+                    const data = snap.data();
+                    setUserDetails((prev) => updateArray(prev,  { ...data, id: snap.id }));
+                } else {
+                    console.log("No such document!");
+                }
+            });
+
+            unsubscribeFunctions.push(unsubscribe);
+        });
+
+        return () => {
+            unsubscribeFunctions.forEach((unsubscribe) => unsubscribe());
+        };
+    },[chatsInfo])
+
+    useEffect(()=>{
+      setChats(mergeItems(chatsInfo,userDetails))
+    },[userDetails])
+    
+    useEffect(()=>{
         const allUnsubscribers = []
-        chats.forEach(item=>{
+        chatsInfo.forEach(item=>{
             const q = query(collection(db, "messages"), where("chatId", '==', item.id))
             
             const unsubscribe = onSnapshot(q, (snap) => {
@@ -60,7 +115,9 @@ export const MyChatsProvider =({ children })=>{
             return ()=> {
                 allUnsubscribers.forEach(unsubscribe=>unsubscribe())
             }
-    },[chats])
+    },[chatsInfo])
+
+    console.log("CHATS ", chats)
 
 
     return (

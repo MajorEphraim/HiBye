@@ -24,7 +24,6 @@ const NewChats = ()=>{
   const { userId } = useContext(AuthContext)
   const { requestInfo_r, requestInfo_s } = useContext(RequestsContext)
 
-  
   const [data, setData] = useState(people)
 
   useEffect(()=>{

@@ -6,7 +6,7 @@ import PicBackground from '../components/PicBackground';
 import ConversationComp from '../components/ConversationComp';
 import ChatSetting from '../modals/ChatSettings';
 import { HeaderContext } from '../context/HeaderContext';
-
+import { useRoute } from '@react-navigation/native';
 import pikachu from '../assets/pictures/pikachu.jpeg'
 
 const isAllowed = true
@@ -14,7 +14,10 @@ const isAllowed = true
 
 const ChatMessages = ()=>{
   const { openOptions, toggleOpenOptions } = useContext(HeaderContext)
+  const route = useRoute()
 
+  const id = route.params.id
+  console.log("IDD ", id)
     return(
       <View style={styles.container}>
         <PicBackground pic ={pikachu}/>

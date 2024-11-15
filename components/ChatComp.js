@@ -1,14 +1,16 @@
-import {View, Text, StyleSheet, TouchableWithoutFeedback, Image} from 'react-native'
-
-const userId = "0123"
+import { useContext } from 'react'
+import {View, Text, StyleSheet, 
+    TouchableWithoutFeedback, Image} from 'react-native'
+import {AuthContext} from '../context/AuthContext'
 
 export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress, pic, lastSender, unread})=>{
+    const {userId} = useContext(AuthContext)
     return(
         <TouchableWithoutFeedback id={id} onPress={()=>handlePress(id)}>
             <View style={styles.container}>
                 <View style={styles.firstView}>
                     <View style={styles.imageContainer}>
-                        <Image source={pic} style={styles.pic}/>
+                        <Image source={{uri:pic}} style={styles.pic}/>
                     </View>
 
                     <View style={styles.name_message}>

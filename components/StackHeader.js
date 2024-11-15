@@ -1,6 +1,6 @@
 import React,{ useContext } from "react";
 import { View, StyleSheet, Image, Text,
-    TouchableWithoutFeedback, Dimensions } from "react-native";
+    TouchableWithoutFeedback, Dimensions, Platform, StatusBar } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -53,12 +53,12 @@ export default StackHeader = ()=>{
 const styles = StyleSheet.create({
     container:{
         width:'100%',
-        height:.1*height,
+        height:.08*height,
         backgroundColor:'#A30D5B',
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
-        marginTop:20,
+        marginTop:StatusBar.currentHeight,
         paddingHorizontal:15
     },
     imageContainer:{
