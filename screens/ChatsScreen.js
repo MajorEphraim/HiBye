@@ -7,12 +7,6 @@ import SearchBar from '../components/SearchBar';
 import { MyChatsContext } from '../context/MyChatsContext'
 import { ChatHeaderContext } from '../context/ChatHeaderContext'
 
-import pikachu from '../assets/pictures/pikachu.jpeg'
-import chris from '../assets/pictures/chris.jpeg'
-import abdul from '../assets/pictures/abdul.jpeg'
-import tendai from '../assets/pictures/tendai.jpeg'
-
-
 const ChatsScreen = ()=>{
 
   const navigation = useNavigation()
@@ -20,7 +14,6 @@ const ChatsScreen = ()=>{
 
   const { chats } = useContext(MyChatsContext)
   const { updateHeaderInfo } = useContext(ChatHeaderContext)
-
 
   const handlePress = (id, chatName, chatIcon, backPicAllowed, blocked, friendId)=>{
     updateHeaderInfo({chatName, chatIcon})
@@ -41,8 +34,8 @@ const ChatsScreen = ()=>{
                         style={styles.listContainer}
                         renderItem={({item})=>(
                           <ChatComp id={item.id} name={item.chatName} lastMessage={item.lastMessage} 
-                            count={0} latestTime={item.timeSent} handlePress={handlePress}
-                            pic={item.chatIcon} lastSender={item.lastSender} unread={false} 
+                            count={item.count} latestTime={item.timeSent} handlePress={handlePress}
+                            pic={item.chatIcon} lastSender={item.lastSender} unread={item.unread} 
                             isAllowed={item.backPicAllowed} isBlocked={item.blocked} friendId={item.friendId}
                           />
                         )}               

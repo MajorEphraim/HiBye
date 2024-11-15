@@ -1,24 +1,48 @@
-import { useState, useContext } from 'react';
-import { StyleSheet, View,
- } from 'react-native';
+import { useState, useContext, useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { db, collection, query, where, onSnapshot } from '../firebase/configs';
 import PicBackground from '../components/PicBackground';
 import ConversationComp from '../components/ConversationComp';
 import ChatSetting from '../modals/ChatSettings';
 import { HeaderContext } from '../context/HeaderContext';
 import { AuthContext } from '../context/AuthContext';
-import { sendMessage } from '../services/chatsService';
+import { MyChatsContext } from '../context/MyChatsContext';
+import { sendMessage, updateChat } from '../services/chatsService';
 import { useRoute } from '@react-navigation/native';
 
 const ChatMessages = ()=>{
   const { openOptions, toggleOpenOptions } = useContext(HeaderContext)
   const { userId } = useContext(AuthContext)
+  const { updateMessages, chats } = useContext(MyChatsContext)
 
   const route = useRoute()
 
-  const {id, chatIcon, backPicAllowed, blocked, friendId} = route.params
+  const id = route.params.id
+
+  const {  chatIcon, backPicAllowed, blocked, friendId } = chats.filter(item=>item.id === id)[0]
 
   const [message, setMessage] = useState('')
   const [errMsg, setErrMsg] = useState(null)
+
+  useEffect(()=>{
+        const q = query(collection(db, "messages"), where("chatId", '==', id))
+
+        const unsubscribe = onSnapshot(q, (snap) => {
+            const msgs = [];
+            snap.forEach((doc) => {
+                msgs.push({ ...doc.data(), id: doc.id });
+            });
+
+            updateMessages(msgs)
+        });
+  
+        return unsubscribe
+        
+},[])
+
+useEffect(()=>{
+  //updateChat({unread:false, count:0})
+},[])
 
 
   const handlePress =async()=>{
@@ -37,7 +61,8 @@ const ChatMessages = ()=>{
         handlePress={handlePress} message={message}
         setMessage={setMessage}
         />
-        <ChatSetting modalVisible={openOptions} setModalVisible={toggleOpenOptions}/>
+        <ChatSetting modalVisible={openOptions} setModalVisible={toggleOpenOptions}
+                      backPicAllowed={backPicAllowed} blocked={blocked} friendId={friendId} id={id}/>
       </View>
     )
 }

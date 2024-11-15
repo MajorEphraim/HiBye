@@ -3,20 +3,41 @@ import { View, Text, Modal, Button, StyleSheet,
     TouchableOpacity, Dimensions, FlatList,
     TouchableWithoutFeedback
  } from 'react-native';
+ import { updateChat } from '../services/chatsService'
 
  const height = Dimensions.get('window').height
  const width = Dimensions.get('window').width
 
 
 
-export default ChatSettings=({modalVisible, setModalVisible})=> {
+export default ChatSettings=({modalVisible, setModalVisible, backPicAllowed, blocked, friendId, id})=> {
   // State to control the modal visibility
-  const handleBlock = ()=>{
+  const isAllowed = backPicAllowed.includes(friendId)
+  const isBlocked = blocked.includes(friendId)
+
+  const handleBlock = async()=>{
+    try {
+      await updateChat({
+        blocked: isBlocked ? blocked.filter(id=>id !==friendId) : [...blocked, friendId]
+      },id)
+      setModalVisible()
+      
+    } catch (error) {
+        console.log(error.message)
+    }
     setModalVisible()
   }
 
-  const handleBackground = ()=>{
-    setModalVisible()
+  const handleBackground = async()=>{
+    try {
+      await updateChat({
+        backPicAllowed: isAllowed ? backPicAllowed.filter(id=>id !==friendId) : [...backPicAllowed, friendId]
+      },id)
+      setModalVisible()
+      
+    } catch (error) {
+        console.log(error.message)
+    }
   }
 
   return (
@@ -31,13 +52,13 @@ export default ChatSettings=({modalVisible, setModalVisible})=> {
             <View style={styles.countContainer}>
                 <TouchableWithoutFeedback onPress={handleBackground}>
                   <View style={styles.textContainer}>
-                      <Text style={styles.text}>Disable background image</Text>
+                      <Text style={styles.text}> { isAllowed ? "Disable background image" :"Enable background image"}</Text>
                   </View>
                 </TouchableWithoutFeedback>
 
                 <TouchableWithoutFeedback onPress={handleBlock}>
                   <View style={styles.textContainer}>
-                      <Text style={styles.text}>Block chat</Text>
+                      <Text style={styles.text}> { isBlocked ? "Unblock chat": "Block chat"}</Text>
                   </View>
                 </TouchableWithoutFeedback>
 

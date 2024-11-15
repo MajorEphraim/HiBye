@@ -8,10 +8,6 @@ import { View, Text, Modal, Button, StyleSheet,
  const height = Dimensions.get('window').height
  const width = Dimensions.get('window').width
 
- import pikachu from '../assets/pictures/jackie.jpg'
-import chris from '../assets/pictures/zero two.jpeg'
-import abdul from '../assets/pictures/tommy.jpeg'
-
 export default FriendRequests=({requests,modalVisible, setModalVisible})=> {
   // State to control the modal visibility
   

@@ -138,6 +138,8 @@ const createChat = async (user1, user2 )=>{
           users: [user1, user2],
           backPicAllowed: [],
           blocked: [],
+          count: 0,
+          unread: true,
         });
   } catch (error) {
     throw new Error("Failed to created a chat, something went wrong");

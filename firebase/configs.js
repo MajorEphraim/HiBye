@@ -6,7 +6,7 @@ import {initializeAuth, getReactNativePersistence  ,getAuth, onAuthStateChanged,
     updateProfile, signOut, deleteUser } from "firebase/auth";
 
 import { doc, setDoc, getFirestore, collection,query, where, onSnapshot,
-        getDocs, addDoc, updateDoc  } from 'firebase/firestore';
+        getDocs, addDoc, updateDoc, increment  } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL,
         deleteObject } from 'firebase/storage'
 
@@ -34,5 +34,6 @@ const storage = getStorage(app)
 export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
         db, signOut, doc, setDoc, storage, ref, uploadBytesResumable, 
         getDownloadURL, deleteObject, deleteUser, onAuthStateChanged,
-        collection,query, where, onSnapshot, getDocs, addDoc, updateDoc
+        collection,query, where, onSnapshot, getDocs, addDoc, updateDoc, 
+        increment
       }

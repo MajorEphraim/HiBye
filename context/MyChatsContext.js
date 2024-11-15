@@ -1,6 +1,7 @@
 import React, { useState, createContext, useEffect, useContext } from "react";
 import { db, collection, query, where, onSnapshot, doc } from '../firebase/configs';
 import { AuthContext } from './AuthContext';
+import { updateArray } from '../services/chatsService'
 
 export const MyChatsContext = createContext()
 
@@ -15,28 +16,9 @@ export const MyChatsProvider =({ children })=>{
     const { userId } = useContext(AuthContext);
 
 
-    const updateChats = (chat)=>{
-
-        //setChats(chat)
-        //setIsLoading(false)
+    const updateMessages = (msgs)=>{
+        setMessages(prev=>updateArray(prev,msgs))
     }
-
-    const updateArray = (arr1, arr2) => {
-
-        let newArr = [...arr1];
-
-        arr2.forEach(item=>{
-            const index = arr1.findIndex(({ id }) => item.id === id);
-            
-            if (index === -1) {
-                newArr.push(item);
-            } else {
-                newArr[index] = { ...newArr[index], ...item };
-            }
-        })
-
-        return newArr;
-    };
 
     const mergeItems = (arr1, arr2)=>{
         let newArr = []
@@ -66,8 +48,7 @@ export const MyChatsProvider =({ children })=>{
             console.error("Error fetching chats:", error); // Log any errors
         });
     
-        // Cleanup function to unsubscribe on unmount or userId change
-        return () => unsubscribe();
+        return () => unsubscribe;
     }, [userId]);
 
 
@@ -100,28 +81,28 @@ export const MyChatsProvider =({ children })=>{
       setChats(mergeItems(chatsInfo,userDetails))
     },[userDetails])
     
-    useEffect(()=>{
-        const allUnsubscribers = []
-        chatsInfo.forEach(item=>{
-            const q = query(collection(db, "messages"), where("chatId", '==', item.id))
+    // useEffect(()=>{
+    //     const allUnsubscribers = []
+    //     chatsInfo.forEach(item=>{
+    //         const q = query(collection(db, "messages"), where("chatId", '==', item.id))
             
-            const unsubscribe = onSnapshot(q, (snap) => {
-                const msgs = [];
-                snap.forEach((doc) => {
-                    msgs.push({ ...doc.data(), id: doc.id });
-                });
-                setMessages(prev=>updateArray(prev,msgs));
-            });
-            allUnsubscribers.push(unsubscribe)
-        })
+    //         const unsubscribe = onSnapshot(q, (snap) => {
+    //             const msgs = [];
+    //             snap.forEach((doc) => {
+    //                 msgs.push({ ...doc.data(), id: doc.id });
+    //             });
+    //             setMessages(prev=>updateArray(prev,msgs));
+    //         });
+    //         allUnsubscribers.push(unsubscribe)
+    //     })
 
-            return ()=> {
-                allUnsubscribers.forEach(unsubscribe=>unsubscribe())
-            }
-    },[chatsInfo])
+    //         return ()=> {
+    //             allUnsubscribers.forEach(unsubscribe=>unsubscribe())
+    //         }
+    // },[chatsInfo])
 
     return (
-        <MyChatsContext.Provider value={{chats, isLoading, updateChats, messages }}>
+        <MyChatsContext.Provider value={{chats, isLoading, messages, updateMessages }}>
             {children}
         </MyChatsContext.Provider>
     )

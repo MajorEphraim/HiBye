@@ -8,9 +8,6 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import { HeaderContext } from "../context/HeaderContext";
 import { ChatHeaderContext } from "../context/ChatHeaderContext";
 
-
-import pikachu from '../assets/pictures/pikachu.jpeg'
-
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 

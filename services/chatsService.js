@@ -1,5 +1,15 @@
-import { db,collection, addDoc, updateDoc, doc } from '../firebase/configs'
+import { db,collection, addDoc, updateDoc, doc, increment } from '../firebase/configs'
 
+
+const updateChat = async(obj, chatId)=>{
+
+  const ref = doc(db, "chats", chatId);
+  try {
+    await updateDoc(ref, obj);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
 
 const sendMessage = async(chatId, message, userId)=>{
     try {
@@ -10,28 +20,27 @@ const sendMessage = async(chatId, message, userId)=>{
 
         const timeSent = (hours <10 ? "0"+hours : hours )+":"+(mins <10 ? "0"+mins : mins)
         const timestamp = Date.now()
-
-        const ref = doc(db, "chats", chatId);
-
-        await updateDoc(ref, {
-            lastMessage:message,
-            lastSender:userId,
-            timeSent:timestamp
-        });
-
+        
         await addDoc(collection(db, "messages"), {
             chatId,
             senderId:userId,
             message,
             timeSent,
             timestamp,
-            unread:true
+            unread:true,
         });
 
-
-                
+        await updateChat({
+          lastMessage:message,
+          lastSender:userId,
+          timeSent:timestamp,
+          unread:true,
+          count:increment(1),
+        },chatId)
+  
         return {error:false}
     } catch (error) {
+      console.log("EEE: ", error.message)
         return {error:true, message:"Oops! failed to send the message"}
     }
 }
@@ -67,6 +76,23 @@ function timeAgo(timestamp) {
       return `${diffInYears} year${diffInYears > 1 ? 's' : ''} ago`;
     }
   }
+
+  const updateArray = (arr1, arr2) => {
+
+    let newArr = [...arr1];
+
+    arr2.forEach(item=>{
+        const index = arr1.findIndex(({ id }) => item.id === id);
+        
+        if (index === -1) {
+            newArr.push(item);
+        } else {
+            newArr[index] = { ...newArr[index], ...item };
+        }
+    })
+
+    return newArr;
+};
   
 
-export {sendMessage,timeAgo}
+export {sendMessage,timeAgo, updateArray, updateChat}
