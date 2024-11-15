@@ -28,8 +28,6 @@ const ChatMessages = ()=>{
     setMessage('')
     if(resp.error)
       setErrMsg(errMsg)
-
-    console.log("resp:::", resp)
   }
 
     return(

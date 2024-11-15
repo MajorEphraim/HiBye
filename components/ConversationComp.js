@@ -1,9 +1,12 @@
+import { useContext } from "react";
 import { Text, View, StyleSheet, FlatList, 
         TextInput, TouchableWithoutFeedback } from "react-native";
 import MessageComp from "./MessageComp";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { sendMessage } from "../services/chatsService";
 import { AuthContext } from '../context/AuthContext'
+import { MyChatsContext } from '../context/MyChatsContext'
+
 
 
 const messages = [
@@ -15,14 +18,17 @@ const messages = [
   ]
 
 export default ConversationComp =({chatId, isAllowed, handlePress, message, setMessage})=>{
-
+    const { messages }  = useContext(MyChatsContext)
     return (
         <View style={{...styles.container,backgroundColor:isAllowed ? 'transparent' :'#fff'}}>
             <FlatList
-                data={messages}
+                data={messages.filter(item => item.chatId === chatId)
+                              .sort((a, b) => a.timestamp - b.timestamp)}
                 style={styles.listContainer}
                 renderItem={({item})=>(
-                    <MessageComp message={item.message} timeSent={item.timeSent} senderId={item.senderId}/>
+                    <MessageComp message={item.message} timeSent={item.timeSent} 
+                    senderId={item.senderId} 
+                    />
                 )}
             />
             <View style={styles.sendMessage}>

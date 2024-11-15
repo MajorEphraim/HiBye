@@ -1,10 +1,12 @@
+import { useContext } from "react";
 import { View, Text, StyleSheet, Dimensions  } from 'react-native'
+import { AuthContext } from '../context/AuthContext'
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
-const userId ="123"
 
 export default MessageComp=({message,timeSent, senderId})=>{
+    const { userId }  = useContext(AuthContext)
     return(
         <View style={{...styles.container,alignItems:senderId === userId ? 'flex-end':'flex-start'}}>
             <View style={{...styles.messageContainer,backgroundColor: senderId === userId ? '#676262' :'#A30D5B'}}>

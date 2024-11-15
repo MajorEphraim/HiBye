@@ -48,9 +48,9 @@ function timeAgo(timestamp) {
     if (diffInSec < 60) {
       return "now"; // Less than 1 minute ago
     } else if (diffInMin < 60) {
-      return `${diffInMin} minute${diffInMin > 1 ? 's' : ''} ago`;
+      return `${diffInMin} min${diffInMin > 1 ? 's' : ''} ago`;
     } else if (diffInHours < 24) {
-      return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+      return `${diffInHours} hr${diffInHours > 1 ? 's' : ''} ago`;
     } else if (diffInDays === 1) {
       return "yesterday";
     } else if (diffInDays < 7) {

@@ -21,15 +21,19 @@ export const MyChatsProvider =({ children })=>{
         //setIsLoading(false)
     }
 
-    const updateArray = (arr1, item) => {
-        const index = arr1.findIndex(({ id }) => item.id === id);
+    const updateArray = (arr1, arr2) => {
+
         let newArr = [...arr1];
 
-        if (index === -1) {
-            newArr.push(item);
-        } else {
-            newArr[index] = { ...newArr[index], ...item };
-        }
+        arr2.forEach(item=>{
+            const index = arr1.findIndex(({ id }) => item.id === id);
+            
+            if (index === -1) {
+                newArr.push(item);
+            } else {
+                newArr[index] = { ...newArr[index], ...item };
+            }
+        })
 
         return newArr;
     };
@@ -78,7 +82,7 @@ export const MyChatsProvider =({ children })=>{
             const unsubscribe = onSnapshot(q, (snap) => {
                 if (snap.exists()) {
                     const data = snap.data();
-                    setUserDetails((prev) => updateArray(prev,  { ...data, id: snap.id }));
+                    setUserDetails((prev) => updateArray(prev,  [{ ...data, id: snap.id }]));
                 } else {
                     console.log("No such document!");
                 }
@@ -106,7 +110,7 @@ export const MyChatsProvider =({ children })=>{
                 snap.forEach((doc) => {
                     msgs.push({ ...doc.data(), id: doc.id });
                 });
-                setMessages(msgs);
+                setMessages(prev=>updateArray(prev,msgs));
             });
             allUnsubscribers.push(unsubscribe)
         })
@@ -117,7 +121,7 @@ export const MyChatsProvider =({ children })=>{
     },[chatsInfo])
 
     return (
-        <MyChatsContext.Provider value={{chats, isLoading, updateChats }}>
+        <MyChatsContext.Provider value={{chats, isLoading, updateChats, messages }}>
             {children}
         </MyChatsContext.Provider>
     )
