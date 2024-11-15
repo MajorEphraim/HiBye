@@ -6,6 +6,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { HeaderContext } from "../context/HeaderContext";
+import { ChatHeaderContext } from "../context/ChatHeaderContext";
+
 
 import pikachu from '../assets/pictures/pikachu.jpeg'
 
@@ -16,6 +18,7 @@ export default StackHeader = ()=>{
     const navigation = useNavigation()
     const route = useRoute()
     const { toggleOpenOptions, toggleOpenLogout } = useContext(HeaderContext)
+    const { headerInfo } = useContext(ChatHeaderContext)
 
     return(
         <View style={styles.container}>
@@ -25,7 +28,7 @@ export default StackHeader = ()=>{
                         <Ionicons name="arrow-back-sharp" size={24} color="#fff" />
                     </TouchableWithoutFeedback>
                 </View>
-                <Text style={styles.routeName}>{route.name === "Account" ? "Account" : "Pikachu"}</Text>
+                <Text style={styles.routeName}>{route.name === "Account" ? "Account" : headerInfo.chatName}</Text>
             </View>
 
 
@@ -38,7 +41,7 @@ export default StackHeader = ()=>{
                 ):(
                     <View style={styles.lowerContainer}>
                         <View style={styles.imageContainer}>
-                            <Image source={pikachu} style={styles.pic}/>
+                            <Image source={{uri:headerInfo.chatIcon}} style={styles.pic}/>
                         </View>
                         <TouchableWithoutFeedback onPress={()=>toggleOpenOptions()}>
                             <Entypo name="dots-three-horizontal" size={24} color="#fff" />

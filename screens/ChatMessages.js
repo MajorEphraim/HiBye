@@ -1,27 +1,44 @@
 import { useState, useContext } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, FlatList
+import { StyleSheet, View,
  } from 'react-native';
 import PicBackground from '../components/PicBackground';
 import ConversationComp from '../components/ConversationComp';
 import ChatSetting from '../modals/ChatSettings';
 import { HeaderContext } from '../context/HeaderContext';
+import { AuthContext } from '../context/AuthContext';
+import { sendMessage } from '../services/chatsService';
 import { useRoute } from '@react-navigation/native';
-import pikachu from '../assets/pictures/pikachu.jpeg'
-
-const isAllowed = true
-
 
 const ChatMessages = ()=>{
   const { openOptions, toggleOpenOptions } = useContext(HeaderContext)
+  const { userId } = useContext(AuthContext)
+
   const route = useRoute()
 
-  const id = route.params.id
-  console.log("IDD ", id)
+  const {id, chatIcon, backPicAllowed, blocked, friendId} = route.params
+
+  const [message, setMessage] = useState('')
+  const [errMsg, setErrMsg] = useState(null)
+
+
+  const handlePress =async()=>{
+    if(message === '')
+      return
+    const resp = await sendMessage(id, message, userId)
+    setMessage('')
+    if(resp.error)
+      setErrMsg(errMsg)
+
+    console.log("resp:::", resp)
+  }
+
     return(
       <View style={styles.container}>
-        <PicBackground pic ={pikachu}/>
-        <ConversationComp isAllowed={isAllowed}/>
+        <PicBackground pic ={chatIcon}/>
+        <ConversationComp chatId={id} isAllowed={backPicAllowed.includes(friendId)} 
+        handlePress={handlePress} message={message}
+        setMessage={setMessage}
+        />
         <ChatSetting modalVisible={openOptions} setModalVisible={toggleOpenOptions}/>
       </View>
     )

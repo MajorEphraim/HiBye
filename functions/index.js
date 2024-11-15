@@ -136,6 +136,8 @@ const createChat = async (user1, user2 )=>{
           lastMessage: null,
           timeSent: Date.now(),
           users: [user1, user2],
+          backPicAllowed: [],
+          blocked: [],
         });
   } catch (error) {
     throw new Error("Failed to created a chat, something went wrong");
@@ -192,4 +194,5 @@ exports.fetchAccounts = functions.https
             .json({error: "Failed to fetch accounts"});
       }
     });
+
 

@@ -2,11 +2,12 @@ import { useContext } from 'react'
 import {View, Text, StyleSheet, 
     TouchableWithoutFeedback, Image} from 'react-native'
 import {AuthContext} from '../context/AuthContext'
+import { timeAgo } from '../services/chatsService'
 
-export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress, pic, lastSender, unread})=>{
+export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress, pic, lastSender, unread, isAllowed, isBlocked, friendId})=>{
     const {userId} = useContext(AuthContext)
     return(
-        <TouchableWithoutFeedback id={id} onPress={()=>handlePress(id)}>
+        <TouchableWithoutFeedback id={id} onPress={()=>handlePress(id, name, pic, isAllowed, isBlocked, friendId)}>
             <View style={styles.container}>
                 <View style={styles.firstView}>
                     <View style={styles.imageContainer}>
@@ -45,7 +46,7 @@ export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress
 
                             ):(
                                 
-                                <Text style={{...styles.latestTime,...(unread && lastSender !== userId ?{color:'#AD3173',fontWeight:'bold'}:{color:'#000',fontWeight:null})}}>{latestTime}</Text>
+                                <Text style={{...styles.latestTime,...(unread && lastSender !== userId ?{color:'#AD3173',fontWeight:'bold'}:{color:'#000',fontWeight:null})}}>{timeAgo(latestTime)}</Text>
                             )
                         }
                 </View>

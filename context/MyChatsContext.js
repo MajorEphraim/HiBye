@@ -40,7 +40,7 @@ export const MyChatsProvider =({ children })=>{
             const friendUserId = item.users.filter(id=>id !== userId)[0]
             const index = arr2.findIndex(({id})=>friendUserId === id)
             if (index !== -1) {
-                newArr.push({...item,...{chatName:arr2[index].username, chatIcon:arr2[index].profilePic}})
+                newArr.push({...item,...{chatName:arr2[index].username, chatIcon:arr2[index].profilePic, friendId:arr2[index].id}})
             }
         })
        
@@ -49,7 +49,6 @@ export const MyChatsProvider =({ children })=>{
 
     useEffect(() => {
         if (!userId) return; // Exit if userId is undefined
-        console.log("USER ID ", userId)
         const q = query(collection(db, "chats"), where("users", "array-contains", userId));
     
         const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -116,9 +115,6 @@ export const MyChatsProvider =({ children })=>{
                 allUnsubscribers.forEach(unsubscribe=>unsubscribe())
             }
     },[chatsInfo])
-
-    console.log("CHATS ", chats)
-
 
     return (
         <MyChatsContext.Provider value={{chats, isLoading, updateChats }}>

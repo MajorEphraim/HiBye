@@ -4,7 +4,7 @@ import { View, Image, StyleSheet, Dimensions } from 'react-native';
 export default function PicBackground({ pic }) {
     return (
             <View style={styles.picContainer}>
-                <Image style={styles.pic} source={pic} />
+                <Image style={styles.pic} source={{uri:pic}} />
             </View>
     );
 }

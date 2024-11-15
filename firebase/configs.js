@@ -1,12 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {initializeAuth, getReactNativePersistence  ,getAuth, onAuthStateChanged,createUserWithEmailAndPassword, 
-    signInWithEmailAndPassword,sendEmailVerification,updateProfile, 
-    signOut, deleteUser } from "firebase/auth";
+import {initializeAuth, getReactNativePersistence  ,getAuth, onAuthStateChanged,
+    createUserWithEmailAndPassword, signInWithEmailAndPassword,sendEmailVerification,
+    updateProfile, signOut, deleteUser } from "firebase/auth";
 
-import { doc, setDoc, getFirestore, collection,query, where, onSnapshot, getDocs  } from 'firebase/firestore';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'
+import { doc, setDoc, getFirestore, collection,query, where, onSnapshot,
+        getDocs, addDoc, updateDoc  } from 'firebase/firestore';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL,
+        deleteObject } from 'firebase/storage'
 
 import * as SecureStore from 'expo-secure-store';
 
@@ -32,5 +34,5 @@ const storage = getStorage(app)
 export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
         db, signOut, doc, setDoc, storage, ref, uploadBytesResumable, 
         getDownloadURL, deleteObject, deleteUser, onAuthStateChanged,
-        collection,query, where, onSnapshot, getDocs
+        collection,query, where, onSnapshot, getDocs, addDoc, updateDoc
       }

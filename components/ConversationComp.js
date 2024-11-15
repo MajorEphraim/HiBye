@@ -1,8 +1,10 @@
-import React,{ useState } from "react";
 import { Text, View, StyleSheet, FlatList, 
         TextInput, TouchableWithoutFeedback } from "react-native";
 import MessageComp from "./MessageComp";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { sendMessage } from "../services/chatsService";
+import { AuthContext } from '../context/AuthContext'
+
 
 const messages = [
     {id:'1', message:'Hi...', senderId:'11', timeSent:'09:00',},
@@ -12,8 +14,8 @@ const messages = [
     {id:'5', message:'I feel the same way, it was one of the best ones I’ve ever watched.', senderId:'11', timeSent:'09:17',},
   ]
 
-export default ConversationComp =({isAllowed})=>{
-    const [message, setMessage] = useState('')
+export default ConversationComp =({chatId, isAllowed, handlePress, message, setMessage})=>{
+
     return (
         <View style={{...styles.container,backgroundColor:isAllowed ? 'transparent' :'#fff'}}>
             <FlatList
@@ -30,7 +32,7 @@ export default ConversationComp =({isAllowed})=>{
                            value={message}
                            onChangeText={val=>setMessage(val)}
                            />
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={()=>handlePress()}>
                     <FontAwesome6 name="paper-plane" size={20} color="#676262"/>
                 </TouchableWithoutFeedback>
             </View>
