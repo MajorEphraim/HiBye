@@ -34,7 +34,7 @@ const ChatsScreen = ()=>{
                         <EmptyScreen/>
                       ):(
                         <FlatList
-                            data={chats}
+                            data={chats.sort((a, b) => b.timeSent - a.timeSent)}
                             keyExtractor={item=>item.id}
                             style={styles.listContainer}
                             renderItem={({item})=>(
