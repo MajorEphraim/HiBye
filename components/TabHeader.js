@@ -6,6 +6,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { HeaderContext } from '../context/HeaderContext'
 import { AccountContext } from '../context/AccountContext'
+import { RequestsContext } from '../context/RequestsContext'
+
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
@@ -15,7 +17,8 @@ export default TabHeader = ()=>{
     const route = useRoute()
     const { toggleOpenRequest } = useContext(HeaderContext)
     const { account } = useContext(AccountContext)
-
+    const { requestInfo_s, requestInfo_r } = useContext(RequestsContext)
+    const requestNo = requestInfo_r.filter(({status})=>status === 'requested').length
 
     return(
         <View style={styles.container}>
@@ -30,6 +33,14 @@ export default TabHeader = ()=>{
             </View>
             <TouchableWithoutFeedback onPress={()=>toggleOpenRequest()}>
                 <View>
+                    {
+                        requestNo >0?(
+                            <View style={styles.badge}>
+                                <Text style={styles.badgeNum}>{requestNo}</Text>
+                            </View>
+
+                        ):(null)
+                    }
                     <Ionicons name="person" size={24} color="#fff" />
                 </View>
             </TouchableWithoutFeedback>
@@ -74,4 +85,19 @@ const styles = StyleSheet.create({
         height:'100%',
         borderRadius:100
     },
+    badge:{
+        height:21,
+        width:21,
+        backgroundColor:'red',
+        borderRadius:100,
+        position:'absolute',
+        zIndex:2,
+        left:"40%",
+        top:"-15%",
+        justifyContent:'center',
+        alignItems:'center'
+    },badgeNum:{
+        color:'#fff',
+        fontSize:11
+    }
 })

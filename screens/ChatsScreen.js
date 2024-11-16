@@ -6,6 +6,7 @@ import ChatComp from '../components/ChatComp';
 import SearchBar from '../components/SearchBar';
 import { MyChatsContext } from '../context/MyChatsContext'
 import { ChatHeaderContext } from '../context/ChatHeaderContext'
+import EmptyScreen from '../components/EmptyScreen';
 
 const ChatsScreen = ()=>{
 
@@ -17,7 +18,7 @@ const ChatsScreen = ()=>{
 
   const handlePress = (id, chatName, chatIcon, backPicAllowed, blocked, friendId)=>{
     updateHeaderInfo({chatName, chatIcon})
-    navigation.navigate("Chat messages",{id, chatIcon, backPicAllowed, blocked, friendId})
+    navigation.navigate("Chat messages",{id})
   }
 
   const handleSearch = (val)=>{
@@ -28,18 +29,24 @@ const ChatsScreen = ()=>{
             
               <View style={styles.container}>
                     <SearchBar placeholder={"search by name"} value={search} handleSearch={handleSearch} />
-                    <FlatList
-                        data={chats}
-                        keyExtractor={item=>item.id}
-                        style={styles.listContainer}
-                        renderItem={({item})=>(
-                          <ChatComp id={item.id} name={item.chatName} lastMessage={item.lastMessage} 
-                            count={item.count} latestTime={item.timeSent} handlePress={handlePress}
-                            pic={item.chatIcon} lastSender={item.lastSender} unread={item.unread} 
-                            isAllowed={item.backPicAllowed} isBlocked={item.blocked} friendId={item.friendId}
-                          />
-                        )}               
-                    />
+                    {
+                      chats.length ==0 ?(
+                        <EmptyScreen/>
+                      ):(
+                        <FlatList
+                            data={chats}
+                            keyExtractor={item=>item.id}
+                            style={styles.listContainer}
+                            renderItem={({item})=>(
+                              <ChatComp id={item.id} name={item.chatName} lastMessage={item.lastMessage} 
+                                count={item.count} latestTime={item.timeSent} handlePress={handlePress}
+                                pic={item.chatIcon} lastSender={item.lastSender} unread={item.unread} 
+                                isAllowed={item.backPicAllowed} isBlocked={item.blocked} friendId={item.friendId}
+                              />
+                            )}               
+                        />
+                      )
+                    }
                     <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>
         

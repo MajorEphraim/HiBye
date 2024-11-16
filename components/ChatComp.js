@@ -1,11 +1,24 @@
-import { useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import {View, Text, StyleSheet, 
     TouchableWithoutFeedback, Image} from 'react-native'
 import {AuthContext} from '../context/AuthContext'
 import { timeAgo } from '../services/chatsService'
 
 export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress, pic, lastSender, unread, isAllowed, isBlocked, friendId})=>{
-    const {userId} = useContext(AuthContext)
+    const { userId } = useContext(AuthContext);
+    const [time, setTime] = useState();
+    
+    useEffect(() => {
+        const update = () => {
+            setTime(timeAgo(latestTime));
+            setTimeout(update, 10000);
+        };
+    
+        update();
+    
+        return () => clearTimeout(); 
+    }, [latestTime]);
+    
     return(
         <TouchableWithoutFeedback id={id} onPress={()=>handlePress(id, name, pic, isAllowed, isBlocked, friendId)}>
             <View style={styles.container}>
@@ -22,7 +35,7 @@ export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress
 
                             ):(
                                 
-                                <Text style={{...styles.lastMessage,fontWeight: unread ? 'bold':null}} numberOfLines={1}>{ lastSender === userId ?"You: "+ lastMessage:lastMessage}</Text>
+                                <Text style={{...styles.lastMessage,fontWeight: unread && lastSender !== userId ? 'bold':null}} numberOfLines={1}>{ lastSender === userId ?"You: "+ lastMessage:lastMessage}</Text>
                             )
                         }
                     </View>
@@ -30,7 +43,7 @@ export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress
 
                 <View style={styles.secView}>
                     {
-                        count > 1 ? (
+                        count > 1 && lastSender !== userId ? (
                             <View style={styles.messageBadge}>
                                 <Text style={styles.messageCount}>{count}</Text>
                             </View>
@@ -46,7 +59,7 @@ export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress
 
                             ):(
                                 
-                                <Text style={{...styles.latestTime,...(unread && lastSender !== userId ?{color:'#AD3173',fontWeight:'bold'}:{color:'#000',fontWeight:null})}}>{timeAgo(latestTime)}</Text>
+                                <Text style={{...styles.latestTime,...(unread && lastSender !== userId ?{color:'#AD3173',fontWeight:'bold'}:{color:'#000',fontWeight:null})}}>{time}</Text>
                             )
                         }
                 </View>

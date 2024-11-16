@@ -35,22 +35,10 @@ const NewChats = ()=>{
       setData(people);
     }
   }, [people]);
-  
-  const mergeItems = (arr1, arr2)=>{
-    const arr3 = []
-    arr1.forEach(item=>{
-      const index = arr2.findIndex(({receiverId})=>item.id == receiverId) // look for match
-      if (index == -1) {
-        arr3.push(item)
-      }else{
-        arr3.push({...item,...arr2[index],id:item.id})
-      }
-    })
-    return arr3
-  }
+
 
   useEffect(()=>{
-    setData(prev=>mergeItems(prev,requestInfo_s))
+    ///csetData(prev=>mergeItems(prev,requestInfo_s))
   },[requestInfo_s])
 
     const handlePress = async(personId)=>{
@@ -60,6 +48,9 @@ const NewChats = ()=>{
         setErMsg(error.message)
       }
     }
+
+    //console.log("requestInfo_r ID::", requestInfo_r)
+    //console.log("USER ID::", userId)
 
     return(
         

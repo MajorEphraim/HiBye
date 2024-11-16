@@ -13,13 +13,13 @@ import { useRoute } from '@react-navigation/native';
 const ChatMessages = ()=>{
   const { openOptions, toggleOpenOptions } = useContext(HeaderContext)
   const { userId } = useContext(AuthContext)
-  const { updateMessages, chats } = useContext(MyChatsContext)
+  const { updateMessages, chats, messages } = useContext(MyChatsContext)
 
   const route = useRoute()
 
   const id = route.params.id
 
-  const {  chatIcon, backPicAllowed, blocked, friendId } = chats.filter(item=>item.id === id)[0]
+  const {  chatIcon, backPicAllowed, blocked, friendId, lastSender } = chats.filter(item=>item.id === id)[0]
 
   const [message, setMessage] = useState('')
   const [errMsg, setErrMsg] = useState(null)
@@ -40,9 +40,26 @@ const ChatMessages = ()=>{
         
 },[])
 
-useEffect(()=>{
-  //updateChat({unread:false, count:0})
-},[])
+useEffect(() => {
+  let isActive = true;
+
+  const clearMessages = async () => {
+    try {
+      if (isActive && lastSender !== userId) {
+        await updateChat({ unread: false, count: 0 }, id);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  clearMessages();
+
+  return () => {
+    isActive = false;
+  };
+}, [messages]);
+
 
 
   const handlePress =async()=>{

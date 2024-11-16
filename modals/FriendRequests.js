@@ -30,7 +30,7 @@ export default FriendRequests=({requests,modalVisible, setModalVisible})=> {
                 <View style={styles.headingContainer}>
                     <Text style={styles.heading}>Friend requests</Text>
                     <View style={styles.badge}>
-                        <Text style={styles.count}>{requests.length}</Text>
+                        <Text style={styles.count}>{requests.filter(({status})=>status === 'requested').length}</Text>
                     </View>
                 </View>
 

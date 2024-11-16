@@ -14,19 +14,19 @@ const AppProvider = ({children})=>(
         <AccountProvider>
           <MessagesProvider>
             <MyChatsProvider>
-              <NewChatsProvider>
-                <RequestsProvider>
+              <RequestsProvider>
+                <NewChatsProvider>
                   <ChatHeaderProvider>
                   {children}
                   </ChatHeaderProvider>
-                </RequestsProvider>
-              </NewChatsProvider>
+                </NewChatsProvider>
+              </RequestsProvider>
             </MyChatsProvider>
           </MessagesProvider>
         </AccountProvider>
     </HeaderProvider>
   </AuthProvider>
 
-)
+) 
 
 export default AppProvider
