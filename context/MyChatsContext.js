@@ -11,8 +11,8 @@ export const MyChatsProvider =({ children })=>{
     const [messages, setMessages] = useState([])
     const [chats, setChats] = useState([])
 
-
-    const [isLoading, setIsLoading] = useState(true)
+    const [errorM, setErrorM] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
     const { userId } = useContext(AuthContext);
 
 
@@ -40,22 +40,30 @@ export const MyChatsProvider =({ children })=>{
         return newArr
       }
 
-    useEffect(() => {
-        if (!userId) return; // Exit if userId is undefined
+      useEffect(() => {
+        if (!userId) return; 
+
+        setIsLoading(true);
+
         const q = query(collection(db, "chats"), where("users", "array-contains", userId));
-        
         const unsubscribe = onSnapshot(q, (snapshot) => {
-            const chatsInfo = [];
+            const fetchedChats = [];
             snapshot.forEach((doc) => {
-                chatsInfo.push({ ...doc.data(), id: doc.id });
+                fetchedChats.push({ ...doc.data(), id: doc.id });
             });
-            
-            setChatsInfo(chatsInfo); // Update state with the chats found
+
+            setChatsInfo(fetchedChats);
+
+            if(fetchedChats.length === 0)
+                setIsLoading(false);
+
         }, (error) => {
-            console.error("Error fetching chats:", error); // Log any errors
+            console.error("Error fetching chats:", error);
+            setErrorM("Error: "+error.message)
+            setIsLoading(false);  
         });
-    
-        return () => unsubscribe;
+
+        return () => unsubscribe();
     }, [userId]);
 
 
@@ -84,14 +92,20 @@ export const MyChatsProvider =({ children })=>{
         };
     },[chatsInfo])
 
-    useEffect(()=>{
-      setChats(mergeItems(chatsInfo,userDetails))
-      if(chatsInfo.length === userDetails.length)
+    useEffect(() => {
+        // Update the chats state after merging the items
+        const mergedChats = mergeItems(chatsInfo, userDetails);
+        setChats(mergedChats);
+    
+        console.log(chatsInfo.length + " " + userDetails.length);
+    
+        // Check if the lengths match and update loading state
+        if ((chatsInfo.length === userDetails.length) && userDetails.length !== 0) {
             setIsLoading(false);
-    },[userDetails])
-    console.log("IS LOADING::", isLoading)
+        }
+    }, [userDetails]);
     return (
-        <MyChatsContext.Provider value={{chats, isLoading, messages, updateMessages, clearChatsStates }}>
+        <MyChatsContext.Provider value={{chats, isLoading, messages, errorM, updateMessages, clearChatsStates }}>
             {children}
         </MyChatsContext.Provider>
     )

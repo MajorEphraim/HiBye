@@ -1,21 +1,20 @@
 import React from "react";
-import { ActivityIndicator, View, StyleSheet } from "react-native";
+import { ActivityIndicator, View, StyleSheet, StatusBar } from "react-native";
 
-const ContentLoader = ()=>{
-    return(
+const ContentLoader = () => {
+    return (
         <View style={styles.container}>
-            <ActivityIndicator size='large' color='#A30D5B'/>
+            <ActivityIndicator size="large" color="#A30D5B" />
         </View>
-    )
+    );
 }
 
-export default ContentLoader
+export default ContentLoader;
 
-const styles =  StyleSheet.create({
-    container:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center',
-        
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,  // Make the view take up all available space
+        justifyContent: 'center',  // Center vertically
+        alignItems: 'center',  // Center horizontally
     }
-})
+});
