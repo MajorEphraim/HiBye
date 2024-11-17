@@ -10,7 +10,8 @@ export const AuthContext = createContext()
 
 export const AuthProvider =({ children })=>{
     const [userId, setUserId] = useState(null)
-    const [isLoading, setIsLoading] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [isFetching, setIsFetching] = useState(true)
     const [errorMsg, setErrorMsg] = useState(null)
 
     const signIn = async(email, password)=>{
@@ -34,7 +35,7 @@ export const AuthProvider =({ children })=>{
 
     const useLocalUserId = async () => {
         try {
-          setIsLoading(true);
+            setIsFetching(true);
           const userId = await getUserId();
           if (userId) {
             setUserId(userId);
@@ -42,7 +43,7 @@ export const AuthProvider =({ children })=>{
         } catch (error) {
           setErrorMsg(error.message);
         } finally {
-          setIsLoading(false);
+            setIsFetching(false);
         }
       };
 
@@ -97,7 +98,6 @@ export const AuthProvider =({ children })=>{
                 setErrorMsg(output.message)
                 return
             }
-            console.log("HEREREREREREE")
 
             await deleteAccount(user.uid)
             await removeUser(user)
@@ -110,11 +110,8 @@ export const AuthProvider =({ children })=>{
         }
     }
 
-
-    console.log("ERRRRR out: ", errorMsg)
-
     return (
-        <AuthContext.Provider value={{userId, isLoading, errorMsg, signIn, useLocalUserId, signOut, removeAccount}}>
+        <AuthContext.Provider value={{userId, isLoading, isFetching, errorMsg, signIn, useLocalUserId, signOut, removeAccount}}>
             {children}
         </AuthContext.Provider>
     )

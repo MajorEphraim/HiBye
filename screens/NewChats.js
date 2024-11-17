@@ -12,6 +12,7 @@ import { AuthContext } from '../context/AuthContext';
 import { RequestsContext } from '../context/RequestsContext';
 import { sendRequests } from '../services/requestsService'
 import LoaderModal from '../modals/LoaderModal'
+import ContentLoader from '../components/ContentLoader';
 
 const NewChats = ()=>{
 
@@ -58,24 +59,29 @@ const NewChats = ()=>{
             <View style={styles.container}>
               <FindPeople updatePeople={updatePeople} search={search} setSearch={setSearch}/>
               <FiltersComp setStatus={setStatus}/>
-              <FlatList
-                 data={data && data.filter(item=>(item.username.toLowerCase().includes(search.toLowerCase())
-                 || item.email.toLowerCase().includes(search.toLowerCase()))
-                 && item.status.includes(status)
-                )}
-                 keyExtractor={item=>item.id}
-                 style={styles.listContainer}
-                 renderItem={({item})=>(
-                   <PersonComp id={item.id} name={item.username} handlePress={handlePress}
-                              pic={item.profilePic} status={item.status}
-                   />
-                  )}               
-                  />
+              {
+                isLoading || isFetching ? (
+                    <ContentLoader/>
+                ):(
+                  <FlatList
+                     data={data && data.filter(item=>(item.username.toLowerCase().includes(search.toLowerCase())
+                     || item.email.toLowerCase().includes(search.toLowerCase()))
+                     && item.status.includes(status)
+                    )}
+                     keyExtractor={item=>item.id}
+                     style={styles.listContainer}
+                     renderItem={({item})=>(
+                       <PersonComp id={item.id} name={item.username} handlePress={handlePress}
+                                  pic={item.profilePic} status={item.status}
+                       />
+                      )}               
+                      />
+                      
+                    )
+                  }
                 <FriendRequests requests={requestInfo_r.filter(item=>item.receiverId === userId)} modalVisible={openRequest} setModalVisible={toggleOpenRequest}/>
-                <PeopleNum modalVisible={isVisible} setModalVisible={setIsVisible}/>
-                <LoaderModal modalVisible={isLoading || isFetching} />
                 <StatusBar style="light" backgroundColor='#A30D5B'/>
-              </View>
+            </View>
         
     )
 }

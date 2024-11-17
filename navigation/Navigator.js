@@ -6,9 +6,10 @@ import { AuthContext } from '../context/AuthContext'
 import { AccountContext } from '../context/AccountContext'
 import { onAuthStateChanged, auth } from '../firebase/configs'
 import { removeItem, setItem } from '../services/localStorageService'
+import SplashScreen from '../screens/SplashScreen'
 
 export default function Navigator() {
-  const { userId, useLocalUserId} = useContext(AuthContext)
+  const { userId, useLocalUserId, isFetching} = useContext(AuthContext)
   const { updateAccount } = useContext(AccountContext)
 
   useEffect(()=>{
@@ -46,8 +47,13 @@ export default function Navigator() {
       }
     });
 
+    
     return () => unsubscribe();
   }, [userId]);
+  
+
+    if(isFetching)
+      return <SplashScreen/>
 
     return (
         <NavigationContainer>

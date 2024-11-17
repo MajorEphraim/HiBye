@@ -20,9 +20,7 @@ const Login = ()=>{
   const navigation = useNavigation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [visible, setVisible] = useState(true)
   
-
   
   const showFeedback = (err)=>{
     Alert.alert(

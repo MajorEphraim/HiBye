@@ -86,9 +86,10 @@ export const MyChatsProvider =({ children })=>{
 
     useEffect(()=>{
       setChats(mergeItems(chatsInfo,userDetails))
-      setIsLoading(false);
+      if(chatsInfo.length === userDetails.length)
+            setIsLoading(false);
     },[userDetails])
-    
+    console.log("IS LOADING::", isLoading)
     return (
         <MyChatsContext.Provider value={{chats, isLoading, messages, updateMessages, clearChatsStates }}>
             {children}
