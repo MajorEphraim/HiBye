@@ -30,11 +30,9 @@ const signUpUser = async(username,email,password)=>{
         const data = await resp.json();
 
         // Handle the successful response
-        console.log('User updated successfully', data);
         return data;
     } catch (error) {
-        console.log(error)
-        return {error:true, message:"Something went wrong: "+error.message}
+        return {error:true, message:"Error: "+error.message}
     }
 }
 
@@ -46,7 +44,7 @@ const signInUser = async(email,password)=>{
         await setItem('userId',user.uid)
         return user
     } catch (error) {
-        return { error:true, message: "Something went wrong while signing in: "+ error.message };
+        return { error:true, message: "Error: "+ error.message };
     }
 }
 
@@ -57,7 +55,7 @@ const signOutUser = async()=>{
         const resp = await removeItem('userId')
         return resp
     } catch (error) {
-        return { error:true, message: "Something went wrong while signing in: "+ error.message };
+        return { error:true, message: "Error: "+ error.message };
     }
 }
 

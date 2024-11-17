@@ -1,38 +1,64 @@
-import React,{useState,useContext} from 'react';
+import React,{useState,useContext, useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Dimensions,
-  TextInput, TouchableWithoutFeedback, KeyboardAvoidingView
+  TouchableWithoutFeedback, KeyboardAvoidingView, Alert,
+  Keyboard
  } from 'react-native';
 import logo from '../assets/pictures/logo_t.png' 
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext' 
+import TextInputComp from '../components/TextInputComp';
+import LoaderModal from '../modals/LoaderModal';
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
 const Login = ()=>{
   const {signIn, isLoading, errorMsg } = useContext(AuthContext)
-
+  
   const navigation = useNavigation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [err, setErr] = useState(errorMsg)
+  const [visible, setVisible] = useState(true)
+  
 
+  
+  const showFeedback = (err)=>{
+    Alert.alert(
+      "Oops!",
+      err,
+      [
+        { text: null, style: "cancel" },
+        {
+          text: "Okay",
+          style: "destructive",
+          onPress: async () => {
+        
+          },
+        },
+      ]
+    );
+  }
+
+  useEffect(()=>{
+    if(errorMsg)
+      showFeedback(errorMsg)
+  },[errorMsg])
 
   const signInUser = async()=>{
 
-      if(email === '' || password ==='')
+      if(email === '' || password ===''){
+        showFeedback("All fields are required")
         return
-
+      }
+      
       try {
         await signIn(email, password)
       } catch (error) {
-        setErr("Something went wrong: "+error)
-        console.log("EE ", error)
+        showFeedback(error.message)
       }
   }
-
     return(
             <View style={styles.container}>
                 <View style={styles.welcome_logo}>
@@ -41,22 +67,8 @@ const Login = ()=>{
                     <Text style={styles.signin_text}>Sign in here</Text>
                 </View>
                 <KeyboardAvoidingView style={styles.input_button}>
-                    <TextInput 
-                      placeholder='email' 
-                      placeholderTextColor={'#cc7ca5'} 
-                      style={styles.input_field}
-                      value={email}
-                      onChangeText={val=>setEmail(val)}
-                      />
-
-                    <TextInput 
-                      placeholder='password' 
-                      placeholderTextColor={'#cc7ca5'}
-                      style={styles.input_field}
-                      value={password}
-                      onChangeText={val=>setPassword(val)}
-                      />
-
+                    <TextInputComp placeholder={"email"} value={email} handleChange={setEmail}/>
+                    <TextInputComp placeholder={"password"} value={password} handleChange={setPassword}/>
                     <Button name={"Log in"} handlePress={signInUser} />
 
                     <TouchableWithoutFeedback onPress={()=>navigation.navigate('Forgot password')}>
@@ -68,6 +80,7 @@ const Login = ()=>{
                     </TouchableWithoutFeedback>
 
                 </KeyboardAvoidingView>
+                <LoaderModal modalVisible={isLoading} handlePress={null}/>
                 <StatusBar style="light" backgroundColor='#A30D5B'/>
             </View>
         

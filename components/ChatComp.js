@@ -6,19 +6,24 @@ import { timeAgo } from '../services/chatsService'
 
 export default ChatComp =({id, name, lastMessage, count, latestTime, handlePress, pic, lastSender, unread, isAllowed, isBlocked, friendId})=>{
     const { userId } = useContext(AuthContext);
-    const [time, setTime] = useState();
+    const [time, setTime] = useState(timeAgo(latestTime));
     
+  
     useEffect(() => {
         const update = () => {
             setTime(timeAgo(latestTime));
-            setTimeout(update, 10000);
         };
     
+        // Initial update
         update();
     
-        return () => clearTimeout(); 
-    }, [latestTime]);
+        // Set interval to refresh every 60 seconds
+        const intervalId = setInterval(update, 60000); // 60,000 ms = 60 seconds
     
+        // Cleanup the interval when the component unmounts
+        return () => clearInterval(intervalId);
+      }, [latestTime]);
+
     return(
         <TouchableWithoutFeedback id={id} onPress={()=>handlePress(id, name, pic, isAllowed, isBlocked, friendId)}>
             <View style={styles.container}>

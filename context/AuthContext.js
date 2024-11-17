@@ -15,15 +15,15 @@ export const AuthProvider =({ children })=>{
 
     const signIn = async(email, password)=>{
         try {
+            setErrorMsg(null)
             setIsLoading(true)
             const response = await signInUser(email, password)
-            
             if(response.error)
                 setErrorMsg(response.message)
             else{
                 setUserId(response.uid)
             }
-
+            
             setIsLoading(false)
 
         } catch (error) {
@@ -93,7 +93,6 @@ export const AuthProvider =({ children })=>{
         try {
             setIsLoading(true)
             const output = await deleteImage(user.uid, user.uid)
-            console.log("Starttttt ")
             if(image && output.error){
                 setErrorMsg(output.message)
                 return
@@ -112,6 +111,7 @@ export const AuthProvider =({ children })=>{
     }
 
 
+    console.log("ERRRRR out: ", errorMsg)
 
     return (
         <AuthContext.Provider value={{userId, isLoading, errorMsg, signIn, useLocalUserId, signOut, removeAccount}}>

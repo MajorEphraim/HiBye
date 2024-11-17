@@ -11,6 +11,7 @@ import { NewChatsContext } from '../context/NewChatsContext';
 import { AuthContext } from '../context/AuthContext';
 import { RequestsContext } from '../context/RequestsContext';
 import { sendRequests } from '../services/requestsService'
+import LoaderModal from '../modals/LoaderModal'
 
 const NewChats = ()=>{
 
@@ -22,7 +23,7 @@ const NewChats = ()=>{
   const { openRequest, toggleOpenRequest } = useContext(HeaderContext)
   const { people, isLoading, errorM ,updatePeople } = useContext(NewChatsContext)
   const { userId } = useContext(AuthContext)
-  const { requestInfo_r, requestInfo_s } = useContext(RequestsContext)
+  const { requestInfo_r, requestInfo_s, isFetching } = useContext(RequestsContext)
 
   const [data, setData] = useState(people)
 
@@ -72,6 +73,7 @@ const NewChats = ()=>{
                   />
                 <FriendRequests requests={requestInfo_r.filter(item=>item.receiverId === userId)} modalVisible={openRequest} setModalVisible={toggleOpenRequest}/>
                 <PeopleNum modalVisible={isVisible} setModalVisible={setIsVisible}/>
+                <LoaderModal modalVisible={isLoading || isFetching} />
                 <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>
         

@@ -12,9 +12,16 @@ export const MyChatsProvider =({ children })=>{
     const [chats, setChats] = useState([])
 
 
-    const [isLoading, setIsLoading] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
     const { userId } = useContext(AuthContext);
 
+
+    const clearChatsStates = ()=>{
+        setChatsInfo([])
+        setUserDetails([])
+        setMessages([])
+        setChats([])
+    }
 
     const updateMessages = (msgs)=>{
         setMessages(prev=>updateArray(prev,msgs))
@@ -36,7 +43,7 @@ export const MyChatsProvider =({ children })=>{
     useEffect(() => {
         if (!userId) return; // Exit if userId is undefined
         const q = query(collection(db, "chats"), where("users", "array-contains", userId));
-    
+        
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const chatsInfo = [];
             snapshot.forEach((doc) => {
@@ -79,30 +86,11 @@ export const MyChatsProvider =({ children })=>{
 
     useEffect(()=>{
       setChats(mergeItems(chatsInfo,userDetails))
+      setIsLoading(false);
     },[userDetails])
     
-    // useEffect(()=>{
-    //     const allUnsubscribers = []
-    //     chatsInfo.forEach(item=>{
-    //         const q = query(collection(db, "messages"), where("chatId", '==', item.id))
-            
-    //         const unsubscribe = onSnapshot(q, (snap) => {
-    //             const msgs = [];
-    //             snap.forEach((doc) => {
-    //                 msgs.push({ ...doc.data(), id: doc.id });
-    //             });
-    //             setMessages(prev=>updateArray(prev,msgs));
-    //         });
-    //         allUnsubscribers.push(unsubscribe)
-    //     })
-
-    //         return ()=> {
-    //             allUnsubscribers.forEach(unsubscribe=>unsubscribe())
-    //         }
-    // },[chatsInfo])
-
     return (
-        <MyChatsContext.Provider value={{chats, isLoading, messages, updateMessages }}>
+        <MyChatsContext.Provider value={{chats, isLoading, messages, updateMessages, clearChatsStates }}>
             {children}
         </MyChatsContext.Provider>
     )

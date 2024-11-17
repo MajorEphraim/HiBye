@@ -13,7 +13,7 @@ export const RequestsProvider = ({ children }) => {
     const [requestInfo_r, setRequestInfo_r] = useState([]);
 
     const { userId } = useContext(AuthContext);
-    const [isLoading, setIsLoading] = useState(null);
+    const [isFetching, setIsFetching] = useState(true);
 
     const updateArray = (arr1, item) => {
         const index = arr1.findIndex(({ id }) => item.id === id);
@@ -116,11 +116,20 @@ export const RequestsProvider = ({ children }) => {
     useEffect(() => {
         setRequestInfo_s(mergeItems(requestsSent, receiversAccount))
         setRequestInfo_r(mergeItems(requestsReceived, sendersAccount))
+
+        if (
+     
+            receiversAccount.length === requestsSent.length &&
+            sendersAccount.length === requestsReceived.length
+          ) 
+            setIsFetching(false); 
+          
+
     }, [requestsSent, requestsReceived, sendersAccount, receiversAccount]);
 
     
     return (
-        <RequestsContext.Provider value={{ requestInfo_r, requestInfo_s }}>
+        <RequestsContext.Provider value={{ requestInfo_r, requestInfo_s, isFetching }}>
             {children}
         </RequestsContext.Provider>
     );

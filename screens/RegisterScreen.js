@@ -1,12 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, Dimensions,
-  TextInput, TouchableWithoutFeedback, KeyboardAvoidingView
+  TouchableWithoutFeedback, KeyboardAvoidingView, 
+  Alert
  } from 'react-native';
 import logo from '../assets/pictures/logo_t.png' 
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 import { signUpUser } from '../services/authService'
+import TextInputComp from '../components/TextInputComp';
+import LoaderModal from '../modals/LoaderModal';
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
@@ -19,27 +22,48 @@ const Register = ()=>{
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPass, setConfirmPass] = useState('')
-  const [err, setErr] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const signUp = async()=>{
-    if(email === '' || username === '' || password === '' || confirmPass === '')
-      return
+  const showFeedback = (err)=>{
+    Alert.alert(
+      "Oops!",
+      err,
+      [
+        { text: null, style: "cancel" },
+        {
+          text: "Okay",
+          style: "destructive",
+          onPress: async () => {
+        
+          },
+        },
+      ]
+    );
+  }
 
-    if(password !== confirmPass)
+
+  const signUp = async()=>{
+    if(email === '' || username === '' || password === '' || confirmPass === ''){
+      showFeedback("All fields are required")
       return
+    }
+
+    if(password !== confirmPass){
+      showFeedback("Paswords must match")
+      return
+    }
 
     try {
       setIsLoading(true)
       const resp = await signUpUser(username, email, password)
       
       if(resp.error)
-        setErr(resp.message)
+        showFeedback(resp.message)
       else
         navigation.navigate("Login")
       setIsLoading(false)
     } catch (error) {
-      setErr(error.message)
+      showFeedback(error.message)
       setIsLoading(false)
 
     }
@@ -54,42 +78,16 @@ const Register = ()=>{
                     <Text style={styles.signup_text}>Sign up here</Text>
                 </View>
                 <KeyboardAvoidingView style={styles.input_button}>
-                    <TextInput 
-                      placeholder='username' 
-                      placeholderTextColor={'#cc7ca5'}
-                      style={styles.input_field}
-                      value={username}
-                      onChangeText={val=>setUsername(val)}
-                      />
-
-                    <TextInput 
-                       placeholder='email' 
-                       placeholderTextColor={'#cc7ca5'}
-                       style={styles.input_field}
-                       value={email}
-                       onChangeText={val=>setEmail(val)}
-                      />
-
-                    <TextInput 
-                      placeholder='password' 
-                      placeholderTextColor={'#cc7ca5'}
-                      style={styles.input_field}
-                      value={password}
-                      onChangeText={val=>setPassword(val)}
-                    />
-
-                    <TextInput 
-                      placeholder='confirm password' 
-                      placeholderTextColor={'#cc7ca5'}
-                      style={styles.input_field}
-                      value={confirmPass}
-                      onChangeText={val=>setConfirmPass(val)}
-                    />
+                    <TextInputComp placeholder={"username"} value={username} handleChange={setUsername}/>
+                    <TextInputComp placeholder={"email"} value={email} handleChange={setEmail}/>
+                    <TextInputComp placeholder={"password"} value={password} handleChange={setPassword}/>
+                    <TextInputComp placeholder={"confirm password"} value={confirmPass} handleChange={setConfirmPass}/>
                     <Button name={"Register"} handlePress={signUp} />
                     <TouchableWithoutFeedback onPress={()=>navigation.navigate('Login')}>
                      <Text style={styles.go_login}>Go to log in</Text>
                     </TouchableWithoutFeedback>
                 </KeyboardAvoidingView>
+                <LoaderModal modalVisible={isLoading} handlePress={null}/>
                 <StatusBar style="light" backgroundColor='#A30D5B'/>
             </View>
         

@@ -1,8 +1,7 @@
 import { View, Text, Modal, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { MyChatsContext } from "../context/MyChatsContext";
 
 export default LogoutModal = ({ modalVisible, handlePress }) => {
-
- 
 
   return (
     <Modal
@@ -12,14 +11,12 @@ export default LogoutModal = ({ modalVisible, handlePress }) => {
       onRequestClose={() => handlePress()}
     >
       <View style={styles.modalOverlay}>
-        {/* Actual modal content */}
         <View style={styles.modalContent}>
           <TouchableOpacity onPress={handlePress} style={styles.textContainer}>
             <Text style={styles.text}>Log out</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Background overlay to close modal when tapping outside */}
         <TouchableWithoutFeedback onPress={()=>handlePress()}>
           <View style={styles.overlay} />
         </TouchableWithoutFeedback>

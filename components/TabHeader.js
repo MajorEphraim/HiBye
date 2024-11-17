@@ -32,7 +32,7 @@ export default TabHeader = ()=>{
                 <Text style={styles.name}>HiBye</Text>
             </View>
             <TouchableWithoutFeedback onPress={()=>toggleOpenRequest()}>
-                <View>
+                <View style={styles.requestWrapper}>
                     {
                         requestNo >0?(
                             <View style={styles.badge}>
@@ -57,13 +57,14 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
         paddingHorizontal:15,
-        marginTop:StatusBar.currentHeight
+        marginTop:StatusBar.currentHeight,
     },
     imageContainer:{
         height:.049*height,
         width:.049*height,
         backgroundColor:'#fff',
         borderRadius:100,
+        marginLeft:2
     }, 
     image_name:{
         flexDirection:'row',
@@ -86,18 +87,24 @@ const styles = StyleSheet.create({
         borderRadius:100
     },
     badge:{
-        height:21,
-        width:21,
+        height:19,
+        width:19,
         backgroundColor:'red',
         borderRadius:100,
         position:'absolute',
         zIndex:2,
         left:"40%",
-        top:"-15%",
+        top:"15%",
         justifyContent:'center',
         alignItems:'center'
     },badgeNum:{
         color:'#fff',
-        fontSize:11
+        fontSize:9
+    },
+    requestWrapper:{
+        height:50, 
+        justifyContent:'center',
+        paddingRight:6
+
     }
 })

@@ -7,20 +7,21 @@ import SearchBar from '../components/SearchBar';
 import { MyChatsContext } from '../context/MyChatsContext'
 import { ChatHeaderContext } from '../context/ChatHeaderContext'
 import EmptyScreen from '../components/EmptyScreen';
+import LoaderModal from '../modals/LoaderModal'
 
 const ChatsScreen = ()=>{
 
   const navigation = useNavigation()
   const [search, setSearch] = useState('')
 
-  const { chats } = useContext(MyChatsContext)
+  const { chats, isLoading } = useContext(MyChatsContext)
   const { updateHeaderInfo } = useContext(ChatHeaderContext)
 
-  const handlePress = (id, chatName, chatIcon, backPicAllowed, blocked, friendId)=>{
+  const handlePress = (id, chatName, chatIcon)=>{
     updateHeaderInfo({chatName, chatIcon})
     navigation.navigate("Chat messages",{id})
   }
-
+  
   const handleSearch = (val)=>{
     setSearch(val)
   }
@@ -30,11 +31,13 @@ const ChatsScreen = ()=>{
               <View style={styles.container}>
                     <SearchBar placeholder={"search by name"} value={search} handleSearch={handleSearch} />
                     {
-                      chats.length ==0 ?(
+                      chats.length ==0 && !isLoading?(
                         <EmptyScreen/>
                       ):(
                         <FlatList
-                            data={chats.sort((a, b) => b.timeSent - a.timeSent)}
+                            data={chats
+                              .filter(item=>(item.chatName.toLowerCase().includes(search.toLowerCase())))
+                              .sort((a, b) => b.timeSent - a.timeSent)}
                             keyExtractor={item=>item.id}
                             style={styles.listContainer}
                             renderItem={({item})=>(
@@ -47,6 +50,7 @@ const ChatsScreen = ()=>{
                         />
                       )
                     }
+                    <LoaderModal modalVisible={isLoading} />
                     <StatusBar style="light" backgroundColor='#A30D5B'/>
               </View>
         

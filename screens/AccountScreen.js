@@ -8,6 +8,7 @@ import { HeaderContext } from '../context/HeaderContext';
 import { AuthContext } from '../context/AuthContext';
 import { AccountContext } from '../context/AccountContext'
 import { pickImage, uploadImage } from '../services/mediaService'
+import { MyChatsContext } from "../context/MyChatsContext";
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
@@ -16,6 +17,7 @@ const AccountScreen = ()=> {
     const { openLogout, toggleOpenLogout } = useContext(HeaderContext)
     const { userId, signOut, errorMsg, removeAccount } = useContext(AuthContext)
     const { erMsg, account, updatePic, updateAccount, updateName, isLoading } = useContext(AccountContext)
+    const { clearChatsStates } = useContext(MyChatsContext)
 
     const [err, setErr] = useState(errorMsg || erMsg)
     const [username, setUsername] = useState(account.username)
@@ -41,6 +43,8 @@ const AccountScreen = ()=> {
         toggleOpenLogout();
         try {
             await signOut();
+            clearChatsStates()
+
         } catch (error) {
             setErr(error.message);
         }
