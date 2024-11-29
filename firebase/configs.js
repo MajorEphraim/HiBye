@@ -12,14 +12,24 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL,
 
 import * as SecureStore from 'expo-secure-store';
 
+import {
+  FIREBASE_API_KEY,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+  FIREBASE_MESSAGING_SENDER_ID,
+  FIREBASE_APP_ID,
+  FIREBASE_MEASUREMENT_ID,
+} from '@env';
+
 const firebaseConfig = {
-  apiKey: "AIzaSyD_zQgPUUN2Mk5JE44kL18YJLyRPo5C6Zc",
-  authDomain: "hibye-3bb78.firebaseapp.com",
-  projectId: "hibye-3bb78",
-  storageBucket: "hibye-3bb78.firebasestorage.app",
-  messagingSenderId: "359270376161",
-  appId: "1:359270376161:web:1e4a520e05608ba8720da0",
-  measurementId: "G-6W5PBC1C26"
+  apiKey: FIREBASE_API_KEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+  appId: FIREBASE_APP_ID,
+  measurementId: FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase

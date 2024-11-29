@@ -37,13 +37,14 @@ const signUpUser = async(username,email,password)=>{
 }
 
 const signInUser = async(email,password)=>{
-    
+ 
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password)
         const user = userCredential.user
         await setItem('userId',user.uid)
         return user
     } catch (error) {
+        console.log("ERRRR: "+error.message)
         return { error:true, message: "Error: "+ error.message };
     }
 }
