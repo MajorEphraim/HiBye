@@ -27,7 +27,7 @@ export default RequestComp =({id, name, pic, status, date, senderId})=>{
 
                 <Text style={styles.date}>{date}</Text>
                 {
-                    status ==='accepted' ? (<Text style={{fontSize:13, color:'#1AD166'}}>accepted</Text>):
+                    status ==='accepted' ? (<Text style={{fontSize:13, color:'#1AD166', flex:1}}>accepted</Text>):
                 (<View style={styles.iconsContainer}>
                     <TouchableOpacity style={styles.statusContainer} onPress={()=>handlePress(id, "accepted")}>
                         <Ionicons name="person-add" size={24} color="#A30D5B" />
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'flex-start',
+        flex:1
     },
     imageContainer:{
         height:45,
@@ -83,10 +84,12 @@ const styles = StyleSheet.create({
     },
     iconsContainer:{
         flexDirection:'row',
-        alignItems:'center'
+        alignItems:'center',
+        flex:1
     },
     date:{
         color:'#000',
-        fontSize:14
+        fontSize:14,
+        flex:1
     }
 })

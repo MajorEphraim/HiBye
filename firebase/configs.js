@@ -22,6 +22,7 @@ import {
   FIREBASE_MEASUREMENT_ID,
 } from '@env';
 
+
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
   authDomain: FIREBASE_AUTH_DOMAIN,

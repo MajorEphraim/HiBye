@@ -44,8 +44,20 @@ const signInUser = async(email,password)=>{
         await setItem('userId',user.uid)
         return user
     } catch (error) {
-        console.log("ERRRR: "+error.message)
-        return { error:true, message: "Error: "+ error.message };
+     
+        let message = "An error occurred.";
+
+        //specifying an error
+        if (error.code === "auth/invalid-email") {
+            message = "The email address is invalid.";
+        } else if (error.code === "auth/user-not-found") {
+            message = "No user found with this email.";
+        } else if (error.code === "auth/wrong-password") {
+            message = "The password is incorrect.";
+        }else
+            message = error.message
+
+        return { error: true, message };
     }
 }
 

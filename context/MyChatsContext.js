@@ -97,8 +97,6 @@ export const MyChatsProvider =({ children })=>{
         const mergedChats = mergeItems(chatsInfo, userDetails);
         setChats(mergedChats);
     
-        console.log(chatsInfo.length + " " + userDetails.length);
-    
         // Check if the lengths match and update loading state
         if ((chatsInfo.length === userDetails.length) && userDetails.length !== 0) {
             setIsLoading(false);

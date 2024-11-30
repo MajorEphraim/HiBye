@@ -4,7 +4,6 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import FindPeople from '../components/FindPeople';
 import PersonComp from '../components/PersonComp';
 import FriendRequests from '../modals/FriendRequests';
-import PeopleNum from '../modals/PeopleNum';
 import FiltersComp from '../components/FiltersComp';
 import { HeaderContext } from '../context/HeaderContext';
 import { NewChatsContext } from '../context/NewChatsContext';
